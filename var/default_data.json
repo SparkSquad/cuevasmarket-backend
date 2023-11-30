@@ -1,0 +1,11 @@
+{
+    "users": [
+        {
+            "email": "admin@vadam.vyx",
+            "password": "Admin1234.",
+            "firstName": "Admin",
+            "surnames": "Vadam",
+            "type": "admin"
+        }
+    ]
+}

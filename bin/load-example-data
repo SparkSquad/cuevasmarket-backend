@@ -1,0 +1,40 @@
+#!/usr/bin/env php
+<?php
+
+use Doctrine\ORM\EntityManager;
+use DI\ContainerBuilder;
+use \App\Domain\User\User;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+// Load env vars
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->safeLoad();
+
+$containerBuilder = new ContainerBuilder();
+$settings = require __DIR__ . '/../app/settings.php';
+$settings($containerBuilder);
+$doctrineBootstrap = require __DIR__ . '/../app/doctrine.php';
+$doctrineBootstrap($containerBuilder);
+$container = $containerBuilder->build();
+$entityManager = $container->get(EntityManager::class);
+
+function set_up_default_user(EntityManager $entityManager): void
+{
+    $defaultData = json_decode(file_get_contents(__DIR__ . '/../var/default_data.json'), true);
+
+    foreach ($defaultData['users'] as $userData) {
+        $user = new User(
+            email: $userData['email'],
+            firstName: $userData['firstName'],
+            surnames: $userData['surnames'],
+            password: $userData['password'],
+            type: $userData['type']
+        );
+        echo 'Creating user ' . $user->getEmail() . PHP_EOL;
+        $entityManager->persist($user);
+    }
+    $entityManager->flush();
+}
+
+set_up_default_user($entityManager);

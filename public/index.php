@@ -12,6 +12,12 @@ use Slim\Factory\ServerRequestCreatorFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+// Load env vars
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->safeLoad();
+
+print_r($_ENV);
+
 // Instantiate PHP-DI ContainerBuilder
 $containerBuilder = new ContainerBuilder();
 
@@ -26,6 +32,10 @@ $settings($containerBuilder);
 // Set up dependencies
 $dependencies = require __DIR__ . '/../app/dependencies.php';
 $dependencies($containerBuilder);
+
+// Set up doctrine
+$doctrineBootstrap = require __DIR__ . '/../app/doctrine.php';
+$doctrineBootstrap($containerBuilder);
 
 // Set up repositories
 $repositories = require __DIR__ . '/../app/repositories.php';

@@ -4,44 +4,111 @@ declare(strict_types=1);
 
 namespace App\Domain\User;
 
+use Doctrine\ORM\Mapping as ORM;
+
 use JsonSerializable;
 
+#[ORM\Entity]
+#[ORM\Table(name: 'user')]
 class User implements JsonSerializable
 {
-    private ?int $id;
+    public const USER_TYPE_ADMIN = 'admin';
+    public const USER_TYPE_USER = 'customer';
+    public const USER_TYPE_MANAGER = 'manager';
 
-    private string $username;
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    private int|null $id = null;
 
+    #[ORM\Column(type: 'string', unique: true)]
     private string $firstName;
 
-    private string $lastName;
+    #[ORM\Column(type: 'string')]
+    private string $surnames;
 
-    public function __construct(?int $id, string $username, string $firstName, string $lastName)
+    #[ORM\Column(type: 'string')]
+    private string $email;
+
+    #[ORM\Column(type: 'string')]
+    private string $password;
+
+    #[ORM\Column(type: 'string')]
+    private string $type;
+
+    public function __construct(string $firstName, string $surnames, string $email, string $password, string $type)
     {
-        $this->id = $id;
-        $this->username = strtolower($username);
-        $this->firstName = ucfirst($firstName);
-        $this->lastName = ucfirst($lastName);
+        if(!in_array($type, [self::USER_TYPE_ADMIN, self::USER_TYPE_USER, self::USER_TYPE_MANAGER])) {
+            throw new \InvalidArgumentException('Invalid user type.');
+        }
+        $this->firstName = $firstName;
+        $this->surnames = $surnames;
+        $this->email = $email;
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
+        $this->type = $type;
     }
 
-    public function getId(): ?int
+    public function getId(): int|null
     {
         return $this->id;
     }
 
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
-
     public function getFirstName(): string
     {
-        return $this->firstName;
+        return ucfirst($this->firstName);
     }
 
-    public function getLastName(): string
+    public function getSurnames(): string
     {
-        return $this->lastName;
+        return ucfirst($this->surnames);
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getType(): string
+    {
+        return ucfirst($this->type);
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function setFirstName(string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    public function setSurnames(string $surnames): void
+    {
+        $this->surnames = $surnames;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function setType(string $type): void
+    {
+        if(!in_array($type, [self::USER_TYPE_ADMIN, self::USER_TYPE_USER, self::USER_TYPE_MANAGER])) {
+            throw new \InvalidArgumentException('Invalid user type.');
+        }
+        $this->type = $type;
+    }
+
+    public function authenticate(string $password): bool
+    {
+        return password_verify($password, $this->password);
+    }
+
+    public function changePassword(string $password): void
+    {
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
     #[\ReturnTypeWillChange]
@@ -49,9 +116,10 @@ class User implements JsonSerializable
     {
         return [
             'id' => $this->id,
-            'username' => $this->username,
             'firstName' => $this->firstName,
-            'lastName' => $this->lastName,
+            'surnames' => $this->surnames,
+            'email' => $this->email,
+            'type' => $this->type
         ];
     }
 }
