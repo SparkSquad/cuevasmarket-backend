@@ -48,13 +48,7 @@ class RegisterUserAction extends UserAction
             return $this->respondWithData($error, 400);
         }
 
-        $user = $this->userRepository->findByEmail($email);
-        if($user) {
-            $this->logger->info("User of email `{$email}` already exists.");
-            throw new UserAlreadyExistsException("User of email '{$email}' already exists.", 409);
-        }
-
-        $loggedUser = $this->request->getAttribute('user');
+        $loggedUser = $this->request->getAttribute('loggedUser');
         $type = User::USER_TYPE_USER;
         if($loggedUser && $loggedUser['type'] === User::USER_TYPE_ADMIN) {
             if(isset($newUserData['type']) && is_string($newUserData['type'])) {
@@ -72,6 +66,8 @@ class RegisterUserAction extends UserAction
             );
 
             $this->userRepository->save($user);
+            
+            return $this->respondWithData(null, 201);
         }
         catch(UserInvalidTypeException $e) {
             $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid user type.');
@@ -85,9 +81,6 @@ class RegisterUserAction extends UserAction
             $this->logger->error($e->getMessage());
             $error = new ActionError(ActionError::SERVER_ERROR, 'Internal server error.');
             return $this->respondWithData($error, 500);
-        }
-        finally {
-            return $this->respondWithData(null, 201);
         }
     }
 }

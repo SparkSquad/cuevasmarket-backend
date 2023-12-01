@@ -33,11 +33,6 @@ class DoctrineUserRepository implements UserRepository
         return $this->repository->find($id);
     }
 
-    public function findByUsername(string $username): ?User
-    {
-        return $this->repository->findOneBy(['username' => $username]);
-    }
-
     public function findByEmail(string $email): ?User
     {
         return $this->repository->findOneBy(['email' => $email]);
@@ -48,8 +43,7 @@ class DoctrineUserRepository implements UserRepository
         $query = $this->em->createQueryBuilder()
             ->select('user')
             ->from(User::class, 'user')
-            ->where('user.username LIKE :keyword')
-            ->orWhere('user.firstName LIKE :keyword')
+            ->where('user.firstName LIKE :keyword')
             ->orWhere('user.surnames LIKE :keyword')
             ->orWhere('user.email LIKE :keyword')
             ->setParameter('keyword', '%' . $keyword . '%')
@@ -61,7 +55,7 @@ class DoctrineUserRepository implements UserRepository
 
     public function save(User $user): void
     {
-        $userExists = $this->findByUsername($user->getEmail());
+        $userExists = $this->findByEmail($user->getEmail());
         if ($userExists) {
             throw new UserAlreadyExistsException();
         }
