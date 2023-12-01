@@ -25,25 +25,25 @@ class RegisterUserAction extends UserAction
         }
 
         $email = $newUserData['email'];
-        if(isset($email) && !is_string($email)) {
+        if(!isset($email) || !is_string($email)) {
             $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid email.');
             return $this->respondWithData($error, 400);
         }
 
         $password = $newUserData['password'];
-        if(isset($password) && !is_string($password)) {
+        if(!isset($password) || !is_string($password)) {
             $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid password.');
             return $this->respondWithData($error, 400);
         }
 
         $firstName = $newUserData['firstName'];
-        if(isset($firstName) && !is_string($firstName)) {
+        if(!isset($firstName) || !is_string($firstName)) {
             $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid first name.');
             return $this->respondWithData($error, 400);
         }
 
         $surnames = $newUserData['surnames'];
-        if(isset($surnames) && !is_string($surnames)) {
+        if(!isset($surnames) || !is_string($surnames)) {
             $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid surnames.');
             return $this->respondWithData($error, 400);
         }
