@@ -43,7 +43,11 @@ class AuthUserAction extends UserAction
         if($user->authenticate($password)) {
             $key = $_ENV['JWT_SECRET'];
             $payload = array(
+                'id' => $user->getId(),
                 'email' => $user->getEmail(),
+                'name' => $user->getFirstName(),
+                'surnames' => $user->getSurnames(),
+                'type' => $user->getType(),
                 'iat' => time()
             );
             $token = JWT::encode($payload, $key, 'HS256');
@@ -52,6 +56,7 @@ class AuthUserAction extends UserAction
                 'email' => $user->getEmail(),
                 'name' => $user->getFirstName(),
                 'surnames' => $user->getSurnames(),
+                'type' => $user->getType(),
                 'token' => $token
             ];
             return $this->respondWithData($responseData);

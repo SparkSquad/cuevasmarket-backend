@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\User;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use InvalidArgumentException;
 use JsonSerializable;
 
 #[ORM\Entity]
@@ -39,7 +39,7 @@ class User implements JsonSerializable
     public function __construct(string $firstName, string $surnames, string $email, string $password, string $type)
     {
         if(!in_array($type, [self::USER_TYPE_ADMIN, self::USER_TYPE_USER, self::USER_TYPE_MANAGER])) {
-            throw new \InvalidArgumentException('Invalid user type.');
+            throw new UserInvalidTypeException();
         }
         $this->firstName = $firstName;
         $this->surnames = $surnames;

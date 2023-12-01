@@ -27,7 +27,7 @@ class AuthMiddleware implements Middleware
                 $key = $_ENV['JWT_SECRET'];
                 $decoded = JWT::decode($token, new Key($key, 'HS256'));
                 $decoded_array = (array) $decoded;
-                $request = $request->withAttribute('user', $decoded_array['email']);
+                $request = $request->withAttribute('user', $decoded_array);
                 return $handler->handle($request);
             }
             catch(Exception $e) {
