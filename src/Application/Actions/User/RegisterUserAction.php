@@ -50,7 +50,7 @@ class RegisterUserAction extends UserAction
 
         $loggedUser = $this->request->getAttribute('loggedUser');
         $type = User::USER_TYPE_USER;
-        if($loggedUser && $loggedUser['type'] === User::USER_TYPE_ADMIN) {
+        if(isset($loggedUser) && $loggedUser['type'] === User::USER_TYPE_ADMIN) {
             if(isset($newUserData['type']) && is_string($newUserData['type'])) {
                 $type = $newUserData['type'];
             }
