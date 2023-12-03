@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\ProductStock;
 
-use App\Domain\Product\Product;
-use App\Domain\Product\ProductAlreadyExistsException;
-use App\Domain\Product\ProductNotFoundException;
-use App\Domain\Product\ProductRepository;
 use App\Domain\ProductStock\ProductStock;
 use App\Domain\ProductStock\ProductStockRepository;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Query\Expr\Func;
 use Doctrine\Persistence\ObjectRepository;
 
 class DoctrineProductStockRepository implements ProductStockRepository

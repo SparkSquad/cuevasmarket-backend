@@ -14,7 +14,7 @@ interface ProductRepository
 
     /**
      * @param string $keyword
-     * @param int $elems
+     * @param int $maxResults
      * @param int $page
      * @param string|null $category
      * @return Product[]
