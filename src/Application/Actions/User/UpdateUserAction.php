@@ -38,7 +38,7 @@ class UpdateUserAction extends UserAction
         }
 
         $loggedUser = $this->request->getAttribute('loggedUser');
-        $type = User::USER_TYPE_USER;
+        $type = User::USER_TYPE_CUSTOMER;
         if($loggedUser && $loggedUser['type'] !== User::USER_TYPE_ADMIN && $loggedUser['id'] !== $user->getId()) {
             $error = new ActionError(ActionError::INSUFFICIENT_PRIVILEGES, 'Insufficient privileges.');
             return $this->respondWithData($error, 403);

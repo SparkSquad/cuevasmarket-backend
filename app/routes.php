@@ -9,6 +9,7 @@ use App\Application\Actions\User\SearchUserAction;
 use App\Application\Actions\User\UpdateUserAction;
 use App\Application\Actions\User\VerifyUserAuthAction;
 use App\Application\Actions\User\ViewUserAction;
+use App\Application\Actions\User\DeleteUserAction;
 use App\Application\Actions\Product\ViewProductAction;
 use App\Application\Actions\Product\CreateProductAction;
 use App\Application\Actions\Product\UpdateProductAction;
@@ -32,12 +33,12 @@ return function (App $app) {
     });
 
     $app->group('/users', function (Group $group) { 
-        $group->get('', ListUsersAction::class); // TODO: remove this 
         $group->get('/{id:[0-9]+}', ViewUserAction::class); 
+        $group->get('/search/[{keyword}]', SearchUserAction::class);
         $group->post('', RegisterUserAction::class);
         $group->put('/{id:[0-9]+}', UpdateUserAction::class);
-        $group->get('/search/[{keyword}]', SearchUserAction::class);
-    })->add(AuthMiddleware::class);
+        $group->delete('/{id:[0-9]+}', DeleteUserAction::class);
+    })->add(AdminAuthMiddleware::class);
 
     $app->group('/auth', function (Group $group) {
         $group->post('/login', AuthUserAction::class);

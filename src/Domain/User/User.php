@@ -13,8 +13,9 @@ use JsonSerializable;
 class User implements JsonSerializable
 {
     public const USER_TYPE_ADMIN = 'admin';
-    public const USER_TYPE_USER = 'customer';
+    public const USER_TYPE_CUSTOMER = 'customer';
     public const USER_TYPE_MANAGER = 'manager';
+    public const USER_TYPE_DELIVERY_MAN = 'delivery man';
 
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
@@ -38,7 +39,7 @@ class User implements JsonSerializable
 
     public function __construct(string $firstName, string $surnames, string $email, string $password, string $type)
     {
-        if(!in_array($type, [self::USER_TYPE_ADMIN, self::USER_TYPE_USER, self::USER_TYPE_MANAGER])) {
+        if(!in_array($type, [self::USER_TYPE_ADMIN, self::USER_TYPE_CUSTOMER, self::USER_TYPE_MANAGER, self::USER_TYPE_DELIVERY_MAN])) {
             throw new UserInvalidTypeException();
         }
         $this->firstName = $firstName;
@@ -95,7 +96,7 @@ class User implements JsonSerializable
 
     public function setType(string $type): void
     {
-        if(!in_array($type, [self::USER_TYPE_ADMIN, self::USER_TYPE_USER, self::USER_TYPE_MANAGER])) {
+        if(!in_array($type, [self::USER_TYPE_ADMIN, self::USER_TYPE_CUSTOMER, self::USER_TYPE_MANAGER, self::USER_TYPE_DELIVERY_MAN])) {
             throw new \InvalidArgumentException('Invalid user type.');
         }
         $this->type = $type;
