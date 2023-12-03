@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Store;
 
 use App\Domain\Product\Product;
+use App\Domain\Product\ProductAlreadyExistsException;
 use App\Domain\Product\ProductNotFoundException;
 use App\Domain\Product\ProductRepository;
 use Doctrine\ORM\EntityManager;
@@ -56,6 +57,10 @@ class DoctrineProductRepository implements ProductRepository
 
     public function save(Product $product): void
     {
+        $productExists = $this->repository->findOneBy(['barcode' => $product->getBarcode()]);
+        if ($productExists) {
+            throw new ProductAlreadyExistsException();
+        }
         $this->em->persist($product);
         $this->em->flush();
     }

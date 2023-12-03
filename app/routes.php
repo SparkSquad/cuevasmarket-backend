@@ -9,10 +9,11 @@ use App\Application\Actions\User\SearchUserAction;
 use App\Application\Actions\User\UpdateUserAction;
 use App\Application\Actions\User\VerifyUserAuthAction;
 use App\Application\Actions\User\ViewUserAction;
-//use App\Application\Actions\Product\CreateProductAction;
-use App\Application\Actions\Product\ListProductsAction;
-//use App\Application\Actions\Product\UpdateProductAction;
-//use App\Application\Actions\Product\ViewProductAction;
+use App\Application\Actions\Product\ViewProductAction;
+use App\Application\Actions\Product\CreateProductAction;
+use App\Application\Actions\Product\UpdateProductAction;
+use App\Application\Actions\Product\SearchProductAction;
+use App\Application\Actions\Product\DeleteProductAction;
 use App\Application\Middleware\AuthMiddlewaregit;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -45,9 +46,10 @@ return function (App $app) {
     });
 
     $app->group('/products', function (Group $group) {
-        $group->get('', ListProductsAction::class);
-        //$group->get('/{id:[0-9]+}', ViewProductAction::class);
-        //$group->post('', CreateProductAction::class);
-        //$group->put('/{id:[0-9]+}', UpdateProductAction::class);
+        $group->get('/{id:[0-9]+}', ViewProductAction::class);
+        $group->post('', CreateProductAction::class);
+        $group->put('/{id:[0-9]+}', UpdateProductAction::class);
+        $group->delete('/{id:[0-9]+}', DeleteProductAction::class);
+        $group->get('/search/[{keyword}]', SearchProductAction::class);
     });
 };

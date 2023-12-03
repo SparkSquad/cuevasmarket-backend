@@ -42,13 +42,16 @@ class Product implements JsonSerializable
     private int|null $id = null;
 
     #[ORM\Column(type: 'string')]
+    private string $barcode;
+
+    #[ORM\Column(type: 'string')]
     private string $name;
 
     #[ORM\Column(type: 'string')]
     private string $description;
 
-    #[ORM\Column(type: 'string')]
-    private string $price;
+    #[ORM\Column(type: 'decimal')]
+    private float $price;
 
     #[ORM\Column(type: 'string')]
     private string $provider;
@@ -56,12 +59,13 @@ class Product implements JsonSerializable
     #[ORM\Column(type: 'string')]
     private string $category;
 
-    public function __construct(string $name, string $description, string $price, string $provider, string $category)
+    public function __construct(string $barcode, string $name, string $description, float $price, string $provider, string $category)
     {
         if (!in_array($category, self::$categories)) {
             throw new ProductInvalidCategoryException();
         }
 
+        $this->barcode = $barcode;
         $this->name = $name;
         $this->description = $description;
         $this->price = $price;
@@ -74,6 +78,11 @@ class Product implements JsonSerializable
         return $this->id;
     }
 
+    public function getBarcode(): string
+    {
+        return ucfirst($this->barcode);
+    }
+
     public function getName(): string
     {
         return ucfirst($this->name);
@@ -84,9 +93,9 @@ class Product implements JsonSerializable
         return ucfirst($this->description);
     }
 
-    public function getPrice(): string
+    public function getPrice(): float
     {
-        return ucfirst($this->price);
+        return $this->price;
     }
 
     public function getProvider(): string
@@ -111,27 +120,28 @@ class Product implements JsonSerializable
         ];
     }
 
+    public function setBarcode(string $barcode): void
+    {
+        $this->barcode = $barcode;
+    }
+
     public function setName(string $name): void
     {
-
         $this->name = $name;
     }
 
     public function setDescription(string $description): void
     {
-
         $this->description = $description;
     }
 
-    public function setPrice(string $price): void
+    public function setPrice(float $price): void
     {
-
         $this->price = $price;
     }
 
     public function setProvider(string $provider): void
     {
-
         $this->provider = $provider;
     }
 

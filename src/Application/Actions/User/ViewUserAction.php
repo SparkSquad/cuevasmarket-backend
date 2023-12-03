@@ -17,9 +17,8 @@ class ViewUserAction extends UserAction
         $userId = (int) $this->resolveArg('id');
         $user = $this->userRepository->findById($userId);
         if(!$user) {
-            throw new UserNotFoundException("User of id '{$userId}' does not exist.", 404);
+            throw new UserNotFoundException();
         }
-        $this->logger->info("User of id `{$userId}` was viewed.");
         return $this->respondWithData($user);
     }
 }
