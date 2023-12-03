@@ -15,6 +15,14 @@ use App\Application\Actions\Product\CreateProductAction;
 use App\Application\Actions\Product\UpdateProductAction;
 use App\Application\Actions\Product\SearchProductAction;
 use App\Application\Actions\Product\DeleteProductAction;
+use App\Application\Actions\ProductStock\ViewProductStockAction;
+use App\Application\Actions\ProductStock\ViewProductStockListAction;
+use App\Application\Actions\ProductStock\ViewStoreBranchProductStock;
+use App\Application\Actions\StoreBranch\CreateStoreBranchAction;
+use App\Application\Actions\StoreBranch\DeleteStoreBranchAction;
+use App\Application\Actions\StoreBranch\SearchStoreBranchAction;
+use App\Application\Actions\StoreBranch\UpdateStoreBranchAction;
+use App\Application\Actions\StoreBranch\ViewStoreBranchAction;
 use App\Application\Middleware\AdminAuthMiddleware;
 use App\Application\Middleware\AuthMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -53,5 +61,16 @@ return function (App $app) {
         $group->post('', CreateProductAction::class)->add(AdminAuthMiddleware::class);
         $group->put('/{id:[0-9]+}', UpdateProductAction::class)->add(AdminAuthMiddleware::class);
         $group->delete('/{id:[0-9]+}', DeleteProductAction::class)->add(AdminAuthMiddleware::class);
+        $group->get('/{productId:[0-9]+}/stock', ViewProductStockListAction::class);
+    });
+
+    $app->group('/storebranches', function (Group $group) {
+        $group->get('/{id:[0-9]+}', ViewStoreBranchAction::class);
+        $group->get('/search/[{keyword}]', SearchStoreBranchAction::class);
+        $group->post('', CreateStoreBranchAction::class)->add(AdminAuthMiddleware::class);
+        $group->put('/{id:[0-9]+}', UpdateStoreBranchAction::class)->add(AdminAuthMiddleware::class);
+        $group->delete('/{id:[0-9]+}', DeleteStoreBranchAction::class)->add(AdminAuthMiddleware::class);
+        $group->get('/{branchId:[0-9]+}/productstock', ViewStoreBranchProductStock::class);
+        $group->get('/{branchId:[0-9]+}/productstock/{productId:[0-9]+}', ViewProductStockAction::class);
     });
 };

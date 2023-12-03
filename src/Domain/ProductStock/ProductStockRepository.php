@@ -16,6 +16,14 @@ interface ProductStockRepository
     public function findById(int $id): ?ProductStock;
 
     /**
+     * If the product stock does not exist, it will be created
+     * @param int $productId
+     * @param int $storeBranchId
+     * @return ProductStock
+     */
+    public function findByProductIdAndStoreBranchId(int $productId, int $storeBranchId): ?ProductStock;
+
+    /**
      * @param int $storeId
      * @return ProductStock[]
      */

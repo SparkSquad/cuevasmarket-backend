@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Store;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 use JsonSerializable;
@@ -32,13 +33,21 @@ class StoreBranch implements JsonSerializable
     #[ORM\Column(type: 'string')]
     private string $longitude;
 
-    public function __construct(string $name, string $address, string $city, string $latitude, string $longitude)
+    #[ORM\Column(type: 'time')]
+    private DateTime $openingHours;
+
+    #[ORM\Column(type: 'time')]
+    private DateTime $closingHours;
+
+    public function __construct(string $name, string $address, string $city, string $latitude, string $longitude, DateTime $openingHours, DateTime $closingHours)
     {
         $this->name = $name;
         $this->address = $address;
         $this->city = $city;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
+        $this->openingHours = $openingHours;
+        $this->closingHours = $closingHours;
     }
 
     public function getId(): int|null
@@ -71,6 +80,16 @@ class StoreBranch implements JsonSerializable
         return ucfirst($this->longitude);
     }
 
+    public function getOpeningHours(): DateTime
+    {
+        return $this->openingHours;
+    }
+
+    public function getClosingHours(): DateTime
+    {
+        return $this->closingHours;
+    }
+
     public function jsonSerialize(): array
     {
         return [
@@ -80,6 +99,8 @@ class StoreBranch implements JsonSerializable
             'city' => $this->getCity(),
             'latitude' => $this->getLatitude(),
             'longitude' => $this->getLongitude(),
+            'openingHours' => $this->getOpeningHours(),
+            'closingHours' => $this->getClosingHours()
         ];
     }
 
@@ -126,5 +147,21 @@ class StoreBranch implements JsonSerializable
             throw new \InvalidArgumentException('Invalid longitude.');
         }
         $this->longitude = $longitude;
+    }
+
+    public function setOpeningHours(DateTime $openingHours): void
+    {
+        if (empty($openingHours)) {
+            throw new \InvalidArgumentException('Invalid opening hours.');
+        }
+        $this->openingHours = $openingHours;
+    }
+
+    public function setClosingHours(DateTime $closingHours): void
+    {
+        if (empty($closingHours)) {
+            throw new \InvalidArgumentException('Invalid closing hours.');
+        }
+        $this->closingHours = $closingHours;
     }
 }

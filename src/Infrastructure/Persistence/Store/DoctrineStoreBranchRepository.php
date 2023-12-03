@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Store;
 
 use App\Domain\Store\StoreBranch;
+use App\Domain\Store\StoreBranchAlreadyExistsException;
 use App\Domain\Store\StoreBranchRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ObjectRepository;
@@ -41,6 +42,10 @@ class DoctrineStoreBranchRepository implements StoreBranchRepository
 
     public function save(StoreBranch $branch): void 
     {
+        $storeBranchExists = $this->repository->findOneBy(['name' => $branch->getName()]);
+        if($storeBranchExists) {
+            throw new StoreBranchAlreadyExistsException();
+        }
         $this->em->persist($branch);
         $this->em->flush();
     }

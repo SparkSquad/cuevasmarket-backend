@@ -12,8 +12,7 @@ abstract class ProductAction extends Action
 {
     protected ProductRepository $productRepository;
 
-    public function __construct(LoggerInterface $logger, ProductRepository
-    $productRepository)
+    public function __construct(LoggerInterface $logger, ProductRepository $productRepository)
     {
         parent::__construct($logger);
         $this->productRepository = $productRepository;

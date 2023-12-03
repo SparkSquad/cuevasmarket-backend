@@ -40,8 +40,8 @@ class CreateProductAction extends ProductAction
         }
 
         $price = $newProductData['price'];
-        if(!isset($firstName) || !is_double($firstName)) {
-            $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid first price.');
+        if(!isset($price) || !is_double($price)) {
+            $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid price.');
             return $this->respondWithData($error, 400);
         }
 

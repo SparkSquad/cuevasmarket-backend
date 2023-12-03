@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\ProductStock;
 
 use App\Domain\Product\Product;
+use App\Domain\Store\StoreBranch;
 use Doctrine\ORM\Mapping as ORM;
 
 use JsonSerializable;
@@ -22,12 +23,17 @@ class ProductStock implements JsonSerializable
     #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
     private Product $product;
 
+    #[ORM\ManyToOne(targetEntity: StoreBranch::class)]
+    #[ORM\JoinColumn(name: 'store_branch_id', referencedColumnName: 'id')]
+    private StoreBranch $storeBranch;
+
     #[ORM\Column(type: 'integer')]
     private int $stock;
 
-    public function __construct(Product $product, int $stock)
+    public function __construct(Product $product, StoreBranch $storeBranch, int $stock)
     {
         $this->product = $product;
+        $this->storeBranch = $storeBranch;
         $this->stock = $stock;
     }
 
