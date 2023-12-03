@@ -62,13 +62,7 @@ class DoctrineProductRepository implements ProductRepository
 
     public function update(Product $product): void
     {
-        $productExists = $this->findById($product->getId());
-        if ($productExists) {
-            $this->em->flush();
-        }
-        else {
-            throw new ProductNotFoundException();
-        }
+        $this->em->flush();
     }
 
     public function delete(Product $product): void
