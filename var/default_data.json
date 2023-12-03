@@ -1,7 +1,8 @@
 {
     "users": [
         {
-            "email": "admin@vadam.xyz",
+            "username": "admin",
+            "phoneNumber": null,
             "password": "Admin1234.",
             "firstName": "Admin",
             "surnames": "Vadam",

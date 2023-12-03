@@ -25,13 +25,14 @@ function set_up_default_user(EntityManager $entityManager): void
 
     foreach ($defaultData['users'] as $userData) {
         $user = new User(
-            email: $userData['email'],
+            username: $userData['username'],
             firstName: $userData['firstName'],
             surnames: $userData['surnames'],
+            phoneNumber: $userData['phoneNumber'],
             password: $userData['password'],
             type: $userData['type']
         );
-        echo 'Creating user ' . $user->getEmail() . PHP_EOL;
+        echo 'Creating user ' . $user->getUsername() . PHP_EOL;
         $entityManager->persist($user);
     }
     $entityManager->flush();

@@ -23,13 +23,16 @@ class User implements JsonSerializable
     private int|null $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
+    private string $username;
+
+    #[ORM\Column(type: 'string')]
     private string $firstName;
 
     #[ORM\Column(type: 'string')]
     private string $surnames;
 
-    #[ORM\Column(type: 'string')]
-    private string $email;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private string|null $phoneNumber;
 
     #[ORM\Column(type: 'string')]
     private string $password;
@@ -37,14 +40,15 @@ class User implements JsonSerializable
     #[ORM\Column(type: 'string')]
     private string $type;
 
-    public function __construct(string $firstName, string $surnames, string $email, string $password, string $type)
+    public function __construct(string $username, string $firstName, string $surnames, string|null $phoneNumber, string $password, string $type)
     {
         if(!in_array($type, [self::USER_TYPE_ADMIN, self::USER_TYPE_CUSTOMER, self::USER_TYPE_MANAGER, self::USER_TYPE_DELIVERY_MAN])) {
             throw new UserInvalidTypeException();
         }
+        $this->username = $username;
         $this->firstName = $firstName;
         $this->surnames = $surnames;
-        $this->email = $email;
+        $this->phoneNumber = $phoneNumber;
         $this->password = password_hash($password, PASSWORD_DEFAULT);
         $this->type = $type;
     }
@@ -52,6 +56,11 @@ class User implements JsonSerializable
     public function getId(): int|null
     {
         return $this->id;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
     }
 
     public function getFirstName(): string
@@ -64,9 +73,9 @@ class User implements JsonSerializable
         return ucfirst($this->surnames);
     }
 
-    public function getEmail(): string
+    public function getPhoneNumber(): string|null
     {
-        return $this->email;
+        return $this->phoneNumber;
     }
 
     public function getType(): string
@@ -89,17 +98,9 @@ class User implements JsonSerializable
         $this->surnames = $surnames;
     }
 
-    public function setEmail(string $email): void
+    public function setPhoneNumber(string $phoneNumber): void
     {
-        $this->email = $email;
-    }
-
-    public function setType(string $type): void
-    {
-        if(!in_array($type, [self::USER_TYPE_ADMIN, self::USER_TYPE_CUSTOMER, self::USER_TYPE_MANAGER, self::USER_TYPE_DELIVERY_MAN])) {
-            throw new \InvalidArgumentException('Invalid user type.');
-        }
-        $this->type = $type;
+        $this->phoneNumber = $phoneNumber;
     }
 
     public function authenticate(string $password): bool
@@ -119,7 +120,7 @@ class User implements JsonSerializable
             'id' => $this->id,
             'firstName' => $this->firstName,
             'surnames' => $this->surnames,
-            'email' => $this->email,
+            'phoneNumber' => $this->phoneNumber,
             'type' => $this->type
         ];
     }

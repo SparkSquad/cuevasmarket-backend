@@ -22,9 +22,9 @@ class AuthUserAction extends UserAction
             return $this->respondWithData($error, 400);
         }
 
-        $email = $credentials['email'];
-        if(isset($email) && !is_string($email)) {
-            $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid email.');
+        $username = $credentials['username'];
+        if(isset($username) && !is_string($username)) {
+            $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid username or phone number.');
             return $this->respondWithData($error, 400);
         }
 
@@ -34,36 +34,37 @@ class AuthUserAction extends UserAction
             return $this->respondWithData($error, 400);
         }
 
-        $user = $this->userRepository->findByEmail($email);
+        $user = $this->userRepository->findByUsername($username);
         if(!$user) {
-            $this->logger->info("User of email `{$email}` does not exist.");
-            throw new UserNotFoundException("User of email '{$email}' does not exist.", 404);
+            throw new UserNotFoundException("User of email '{$username}' does not exist.", 404);
         }
 
         if($user->authenticate($password)) {
             $key = $_ENV['JWT_SECRET'];
             $payload = array(
                 'id' => $user->getId(),
-                'email' => $user->getEmail(),
+                'username' => $user->getUsername(),
                 'name' => $user->getFirstName(),
                 'surnames' => $user->getSurnames(),
+                'phoneNumber' => $user->getPhoneNumber(),
                 'type' => $user->getType(),
                 'iat' => time()
             );
             $token = JWT::encode($payload, $key, 'HS256');
             $responseData = [
                 'id' => $user->getId(),
-                'email' => $user->getEmail(),
+                'username' => $user->getUsername(),
                 'name' => $user->getFirstName(),
                 'surnames' => $user->getSurnames(),
+                'phoneNumber' => $user->getPhoneNumber(),
                 'type' => $user->getType(),
                 'token' => $token
             ];
             return $this->respondWithData($responseData);
         } 
         else {
-            $this->logger->info("User of email `{$email}` was not authenticated.");
-            throw new UserNotFoundException("User of email '{$email}' does not exist.", 404);
+            $this->logger->info("User of email `{$username}` was not authenticated.");
+            throw new UserNotFoundException("User of email '{$username}' does not exist.", 404);
         }
     }
 }

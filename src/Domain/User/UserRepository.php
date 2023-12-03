@@ -18,10 +18,10 @@ interface UserRepository
     public function findById(int $id): ?User;
 
     /**
-     * @param string $email
+     * @param string $username
      * @return User
      */
-    public function findByEmail(string $email): ?User;
+    public function findByUsername(string $username): ?User;
 
     /**
      * @param string $query

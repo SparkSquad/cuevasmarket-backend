@@ -37,20 +37,13 @@ class UpdateUserAction extends UserAction
             return $this->respondWithData($error, 404);
         }
 
-        $loggedUser = $this->request->getAttribute('loggedUser');
-        $type = User::USER_TYPE_CUSTOMER;
-        if($loggedUser && $loggedUser['type'] !== User::USER_TYPE_ADMIN && $loggedUser['id'] !== $user->getId()) {
-            $error = new ActionError(ActionError::INSUFFICIENT_PRIVILEGES, 'Insufficient privileges.');
-            return $this->respondWithData($error, 403);
-        }
-
-        $email = $newUserData['email'];
-        if(isset($email)) {
-            if(!is_string($email)) {
-                $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid email.');
+        $phoneNumber = $newUserData['phoneNumber'];
+        if(isset($phoneNumber)) {
+            if(!is_string($phoneNumber)) {
+                $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid phone number.');
                 return $this->respondWithData($error, 400);
             }
-            $user->setEmail($email);
+            $user->setPhoneNumber($phoneNumber);
         }
 
         $password = $newUserData['password'];

@@ -24,12 +24,6 @@ class RegisterUserAction extends UserAction
             return $this->respondWithData($error, 400);
         }
 
-        $email = $newUserData['email'];
-        if(!isset($email) || !is_string($email)) {
-            $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid email.');
-            return $this->respondWithData($error, 400);
-        }
-
         $password = $newUserData['password'];
         if(!isset($password) || !is_string($password)) {
             $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid password.');
@@ -56,17 +50,34 @@ class RegisterUserAction extends UserAction
             }
         }
 
+        $username = "";
+        $phoneNumber = null;
+        if($type == User::USER_TYPE_CUSTOMER) {
+            $phoneNumber = $newUserData['phoneNumber'];
+            if(!isset($phoneNumber) || !is_string($phoneNumber)) {
+                $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid phone number.');
+                return $this->respondWithData($error, 400);
+            }
+            $username = $phoneNumber;
+        }
+        else {
+            $username = $newUserData['username'];
+            if(!isset($username) || !is_string($username)) {
+                $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid username.');
+                return $this->respondWithData($error, 400);
+            }
+        }
+
         try {
             $user = new User(
-                email: $email,
-                password: $password,
-                firstName: $firstName,
-                surnames: $surnames,
-                type: $type
+                $username,
+                $firstName,
+                $surnames,
+                $phoneNumber,
+                $password,
+                $type
             );
-
             $this->userRepository->save($user);
-            
             return $this->respondWithData(null, 201);
         }
         catch(UserInvalidTypeException $e) {
@@ -74,7 +85,7 @@ class RegisterUserAction extends UserAction
             return $this->respondWithData($error, 400);
         }
         catch(UserAlreadyExistsException $e) {
-            $error = new ActionError(ActionError::CONFLICT, 'User already exists.');
+            $error = new ActionError(ActionError::CONFLICT, 'An user with the same username or phone number already exists.');
             return $this->respondWithData($error, 409);
         }
         catch(Exception $e) {
