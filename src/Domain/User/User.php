@@ -70,7 +70,7 @@ class User implements JsonSerializable
 
     public function getType(): string
     {
-        return ucfirst($this->type);
+        return $this->type;
     }
 
     public function setId(int $id): void
