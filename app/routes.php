@@ -15,7 +15,8 @@ use App\Application\Actions\Product\CreateProductAction;
 use App\Application\Actions\Product\UpdateProductAction;
 use App\Application\Actions\Product\SearchProductAction;
 use App\Application\Actions\Product\DeleteProductAction;
-use App\Application\Middleware\AuthMiddlewaregit;
+use App\Application\Middleware\AdminAuthMiddleware;
+use App\Application\Middleware\AuthMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -48,9 +49,9 @@ return function (App $app) {
 
     $app->group('/products', function (Group $group) {
         $group->get('/{id:[0-9]+}', ViewProductAction::class);
-        $group->post('', CreateProductAction::class);
-        $group->put('/{id:[0-9]+}', UpdateProductAction::class);
-        $group->delete('/{id:[0-9]+}', DeleteProductAction::class);
         $group->get('/search/[{keyword}]', SearchProductAction::class);
+        $group->post('', CreateProductAction::class)->add(AdminAuthMiddleware::class);
+        $group->put('/{id:[0-9]+}', UpdateProductAction::class)->add(AdminAuthMiddleware::class);
+        $group->delete('/{id:[0-9]+}', DeleteProductAction::class)->add(AdminAuthMiddleware::class);
     });
 };
