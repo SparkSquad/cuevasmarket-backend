@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Persistence\Store;
+namespace App\Infrastructure\Persistence\Product;
 
 use App\Domain\Product\Product;
 use App\Domain\Product\ProductAlreadyExistsException;

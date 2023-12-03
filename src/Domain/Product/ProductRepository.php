@@ -13,7 +13,7 @@ interface ProductRepository
     public function findById(int $id): ?Product;
 
     /**
-     * @param string $query
+     * @param string $keyword
      * @param int $elems
      * @param int $page
      * @param string|null $category
