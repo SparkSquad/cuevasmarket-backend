@@ -23,6 +23,19 @@ class Product implements JsonSerializable
     public const PRODUCT_CATEGORY_SNACKS_AND_SWEETS = 'snacks and sweets';
     public const PRODUCT_CATEGORY_ALCOHOL = 'alcohol';
 
+    public static array $categories = [
+        self::PRODUCT_CATEGORY_DRY_FOOD,
+        self::PRODUCT_CATEGORY_CANNED_FOOD,
+        self::PRODUCT_CATEGORY_BEVERAGES,
+        self::PRODUCT_CATEGORY_FRESH_FOOD,
+        self::PRODUCT_CATEGORY_FROZEN_FOOD,
+        self::PRODUCT_CATEGORY_MEET_AND_SEAFOOD,
+        self::PRODUCT_CATEGORY_CLEANING,
+        self::PRODUCT_CATEGORY_PERSONAL_CARE,
+        self::PRODUCT_CATEGORY_SNACKS_AND_SWEETS,
+        self::PRODUCT_CATEGORY_ALCOHOL
+    ];
+
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
@@ -45,19 +58,7 @@ class Product implements JsonSerializable
 
     public function __construct(string $name, string $description, string $price, string $provider, string $category)
     {
-        $categories = [
-            self::PRODUCT_CATEGORY_DRY_FOOD,
-            self::PRODUCT_CATEGORY_CANNED_FOOD,
-            self::PRODUCT_CATEGORY_BEVERAGES,
-            self::PRODUCT_CATEGORY_FRESH_FOOD,
-            self::PRODUCT_CATEGORY_FROZEN_FOOD,
-            self::PRODUCT_CATEGORY_MEET_AND_SEAFOOD,
-            self::PRODUCT_CATEGORY_CLEANING,
-            self::PRODUCT_CATEGORY_PERSONAL_CARE,
-            self::PRODUCT_CATEGORY_SNACKS_AND_SWEETS,
-            self::PRODUCT_CATEGORY_ALCOHOL
-        ];
-        if (!in_array($category, $categories)) {
+        if (!in_array($category, self::$categories)) {
             throw new ProductInvalidCategoryException();
         }
 
@@ -136,19 +137,7 @@ class Product implements JsonSerializable
 
     public function setCategory(string $category): void
     {
-        $categories = [
-            self::PRODUCT_CATEGORY_DRY_FOOD,
-            self::PRODUCT_CATEGORY_CANNED_FOOD,
-            self::PRODUCT_CATEGORY_BEVERAGES,
-            self::PRODUCT_CATEGORY_FRESH_FOOD,
-            self::PRODUCT_CATEGORY_FROZEN_FOOD,
-            self::PRODUCT_CATEGORY_MEET_AND_SEAFOOD,
-            self::PRODUCT_CATEGORY_CLEANING,
-            self::PRODUCT_CATEGORY_PERSONAL_CARE,
-            self::PRODUCT_CATEGORY_SNACKS_AND_SWEETS,
-            self::PRODUCT_CATEGORY_ALCOHOL
-        ];
-        if (!in_array($category, $categories)) {
+        if (!in_array($category, self::$categories)) {
             throw new ProductInvalidCategoryException();
         }
         $this->category = $category;
