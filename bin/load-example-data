@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use App\Domain\Store\StoreBranch;
 use Doctrine\ORM\EntityManager;
 use DI\ContainerBuilder;
 use \App\Domain\User\User;
@@ -38,4 +39,27 @@ function set_up_default_user(EntityManager $entityManager): void
     $entityManager->flush();
 }
 
+function load_default_store_branches(EntityManager $entityManager): void
+{
+    $defaultData = json_decode(file_get_contents(__DIR__ . '/../var/default_data.json'), true);
+
+    foreach ($defaultData['store_branches'] as $storeBranchData) {
+        $parsedOpeningHours = date_create_from_format('H:i', $storeBranchData['openingHours']);
+        $parsedClosingHours = date_create_from_format('H:i', $storeBranchData['closingHours']);
+
+        $storeBranch = new StoreBranch(
+            name: $storeBranchData['name'],
+            address: $storeBranchData['address'],
+            openingHours: $parsedOpeningHours,
+            closingHours: $parsedClosingHours,
+            latitude: $storeBranchData['latitude'],
+            longitude: $storeBranchData['longitude']
+        );
+        echo 'Creating store branch ' . $storeBranch->getName() . PHP_EOL;
+        $entityManager->persist($storeBranch);
+    }
+    $entityManager->flush();
+}
+
 set_up_default_user($entityManager);
+load_default_store_branches($entityManager);

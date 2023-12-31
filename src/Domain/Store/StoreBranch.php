@@ -25,9 +25,6 @@ class StoreBranch implements JsonSerializable
     private string $address;
 
     #[ORM\Column(type: 'string')]
-    private string $city;
-
-    #[ORM\Column(type: 'string')]
     private string $latitude;
 
     #[ORM\Column(type: 'string')]
@@ -39,11 +36,10 @@ class StoreBranch implements JsonSerializable
     #[ORM\Column(type: 'time')]
     private DateTime $closingHours;
 
-    public function __construct(string $name, string $address, string $city, string $latitude, string $longitude, DateTime $openingHours, DateTime $closingHours)
+    public function __construct(string $name, string $address, string $latitude, string $longitude, DateTime $openingHours, DateTime $closingHours)
     {
         $this->name = $name;
         $this->address = $address;
-        $this->city = $city;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->openingHours = $openingHours;
@@ -63,11 +59,6 @@ class StoreBranch implements JsonSerializable
     public function getAddress(): string
     {
         return ucfirst($this->address);
-    }
-
-    public function getCity(): string
-    {
-        return ucfirst($this->city);
     }
 
     public function getLatitude(): string
@@ -96,7 +87,6 @@ class StoreBranch implements JsonSerializable
             'id' => $this->getId(),
             'name' => $this->getName(),
             'address' => $this->getAddress(),
-            'city' => $this->getCity(),
             'latitude' => $this->getLatitude(),
             'longitude' => $this->getLongitude(),
             'openingHours' => $this->getOpeningHours(),
@@ -123,14 +113,6 @@ class StoreBranch implements JsonSerializable
             throw new \InvalidArgumentException('Invalid address.');
         }
         $this->address = $address;
-    }
-
-    public function setCity(string $city): void
-    {
-        if (empty($city)) {
-            throw new \InvalidArgumentException('Invalid city.');
-        }
-        $this->city = $city;
     }
 
     public function setLatitude(string $latitude): void

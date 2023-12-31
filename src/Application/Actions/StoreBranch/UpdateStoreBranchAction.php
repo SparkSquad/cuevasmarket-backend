@@ -50,15 +50,6 @@ class UpdateStoreBranchAction extends StoreBranchAction
             $storeBranch->setAddress($address);
         }
 
-        $city = $newBranchData['city'];
-        if(isset($city)) {
-            if(!is_string($city)) {
-                $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid city.');
-                return $this->respondWithData($error, 400);
-            }
-            $storeBranch->setCity($city);
-        }
-
         $latitude = $newBranchData['latitude'];
         if(isset($latitude)) {
             if(!is_string($latitude)) {

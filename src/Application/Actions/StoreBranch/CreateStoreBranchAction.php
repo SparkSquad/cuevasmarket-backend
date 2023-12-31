@@ -32,12 +32,6 @@ class CreateStoreBranchAction extends StoreBranchAction
             return $this->respondWithData($error, 400);
         }
 
-        $city = $newBranchData['city'];
-        if(!isset($city) || !is_string($city)) {
-            $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid city.');
-            return $this->respondWithData($error, 400);
-        }
-
         $latitude = $newBranchData['latitude'];
         if(!isset($latitude) || !is_string($latitude)) {
             $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid latitude.');
@@ -74,7 +68,6 @@ class CreateStoreBranchAction extends StoreBranchAction
             $storeBranch = new StoreBranch(
                 $name,
                 $address,
-                $city,
                 $latitude,
                 $longitude,
                 $parsedOpeningHours,

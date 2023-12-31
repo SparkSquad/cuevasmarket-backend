@@ -23,7 +23,7 @@ interface StoreBranchRepository
      * @param int $page
      * @return StoreBranch[]
      */
-    public function search(string $keyword, int $maxResults, int $page): array;
+    public function search(string $keyword, int $maxResults, int $page): StoreBranchSearchResultsDTO;
 
     /**
      * @param StoreBranch $branch

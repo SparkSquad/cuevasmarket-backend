@@ -14,7 +14,7 @@ class SearchStoreBranchAction extends StoreBranchAction
         $queryParams = $this->request->getQueryParams();
         $maxResults = intval($queryParams['maxResults']) ?? 10;
         $page = intval($queryParams['page']) ?? 1;
-        $users = $this->storeBranchRepository->search($keyword, $maxResults, $page);
-        return $this->respondWithData($users);
+        $result = $this->storeBranchRepository->search($keyword, $maxResults, $page);
+        return $this->respondWithData($result);
     }
 }

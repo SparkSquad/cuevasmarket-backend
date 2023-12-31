@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Application\Actions\User\AuthUserAction;
-use App\Application\Actions\User\ListUsersAction;
 use App\Application\Actions\User\RegisterUserAction;
 use App\Application\Actions\User\SearchUserAction;
 use App\Application\Actions\User\UpdateUserAction;
@@ -57,7 +56,7 @@ return function (App $app) {
 
     $app->group('/products', function (Group $group) {
         $group->get('/{id:[0-9]+}', ViewProductAction::class);
-        $group->get('/search/[{keyword}]', SearchProductAction::class);
+        // $group->get('/search/[{keyword}]', SearchProductAction::class);
         $group->post('', CreateProductAction::class)->add(AdminAuthMiddleware::class);
         $group->put('/{id:[0-9]+}', UpdateProductAction::class)->add(AdminAuthMiddleware::class);
         $group->delete('/{id:[0-9]+}', DeleteProductAction::class)->add(AdminAuthMiddleware::class);
