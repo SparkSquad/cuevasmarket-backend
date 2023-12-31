@@ -62,7 +62,7 @@
         }
     },
     "scripts": {
-        "start": "php -S 192.168.2.1:8080 -t public",
+        "start": "php -S localhost:8080 -t public",
         "init-database": "php bin/doctrine orm:schema-tool:create",
         "load-example-data": "php bin/load-example-data",
         "update-database": "php bin/doctrine orm:schema-tool:update --force --complete",
