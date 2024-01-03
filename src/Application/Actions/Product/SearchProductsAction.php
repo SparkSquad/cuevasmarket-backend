@@ -12,8 +12,8 @@ class SearchProductsAction extends ProductAction
     {
         $keyword = $this->args['keyword'] ?? '';
         $queryParams = $this->request->getQueryParams();
-        $maxResults = intval($queryParams['maxResults']) ?? 10;
-        $page = intval($queryParams['page']) ?? 1;
+        $maxResults = isset($queryParams['maxResults']) ? intval($queryParams['maxResults']) : 10;
+        $page = isset($queryParams['page']) ? intval($queryParams['page']) : 1;
         $users = $this->productRepository->search($keyword, $maxResults, $page);
         return $this->respondWithData($users);
     }
