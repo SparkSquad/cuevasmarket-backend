@@ -50,7 +50,7 @@ class Product implements JsonSerializable
     #[ORM\Column(type: 'string')]
     private string $description;
 
-    #[ORM\Column(type: 'decimal')]
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, options: ['default' => '0.00'])]
     private float $price;
 
     #[ORM\Column(type: 'string')]
