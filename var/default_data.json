@@ -11,31 +11,105 @@
     ],
     "store_branches": [
         {
-          "name": "Sucursal A",
-          "address": "Calle Principal 123",
-          "city": "Ciudad A",
-          "latitude": "12.3456",
-          "longitude": "-78.9012",
-          "openingHours": "09:00",
-          "closingHours": "18:00"
+            "name": "Sucursal A",
+            "address": "Calle Principal 123",
+            "city": "Ciudad A",
+            "latitude": "12.3456",
+            "longitude": "-78.9012",
+            "openingHours": "09:00",
+            "closingHours": "18:00"
         },
         {
-          "name": "Sucursal B",
-          "address": "Avenida Principal 456",
-          "city": "Ciudad B",
-          "latitude": "34.5678",
-          "longitude": "-56.7890",
-          "openingHours": "10:00",
-          "closingHours": "19:30"
+            "name": "Sucursal B",
+            "address": "Avenida Principal 456",
+            "city": "Ciudad B",
+            "latitude": "34.5678",
+            "longitude": "-56.7890",
+            "openingHours": "10:00",
+            "closingHours": "19:30"
         },
         {
-          "name": "Sucursal C",
-          "address": "Plaza Central 789",
-          "city": "Ciudad C",
-          "latitude": "45.6789",
-          "longitude": "-67.8901",
-          "openingHours": "08:30",
-          "closingHours": "17:45"
+            "name": "Sucursal C",
+            "address": "Plaza Central 789",
+            "city": "Ciudad C",
+            "latitude": "45.6789",
+            "longitude": "-67.8901",
+            "openingHours": "08:30",
+            "closingHours": "17:45"
+        }
+    ],
+    "products": [
+        {
+            "barcode": "1234567890123",
+            "name": "Producto A",
+            "description": "Descripción del producto A",
+            "price": 123.45,
+            "provider": "Proveedor A",
+            "category": "dry food"
+        },
+        {
+            "barcode": "2345678901234",
+            "name": "Producto B",
+            "description": "Descripción del producto B",
+            "price": 234.56,
+            "provider": "Proveedor B",
+            "category": "dry food"
+        },
+        {
+            "barcode": "3456789012345",
+            "name": "Producto C",
+            "description": "Descripción del producto C",
+            "price": 345.67,
+            "provider": "Proveedor C",
+            "category": "dry food"
+        },
+        {
+            "barcode": "4567890123456",
+            "name": "Producto D",
+            "description": "Descripción del producto D",
+            "price": 456.78,
+            "provider": "Proveedor D",
+            "category": "dry food"
+        },
+        {
+            "barcode": "5678901234567",
+            "name": "Producto E",
+            "description": "Descripción del producto E",
+            "price": 567.89,
+            "provider": "Proveedor E",
+            "category": "dry food"
+        },
+        {
+            "barcode": "6789012345678",
+            "name": "Producto F",
+            "description": "Descripción del producto F",
+            "price": 678.90,
+            "provider": "Proveedor F",
+            "category": "dry food"
+        },
+        {
+            "barcode": "7890123456789",
+            "name": "Producto G",
+            "description": "Descripción del producto G",
+            "price": 789.01,
+            "provider": "Proveedor G",
+            "category": "dry food"
+        },
+        {
+            "barcode": "8901234567890",
+            "name": "Producto H",
+            "description": "Descripción del producto H",
+            "price": 890.12,
+            "provider": "Proveedor H",
+            "category": "dry food"
+        },
+        {
+            "barcode": "9012345678901",
+            "name": "Producto I",
+            "description": "Descripción del producto I",
+            "price": 901.23,
+            "provider": "Proveedor I",
+            "category": "dry food"
         }
     ]
 }
