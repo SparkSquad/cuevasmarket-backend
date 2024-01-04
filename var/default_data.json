@@ -17,6 +17,80 @@
       "type": "customer"
     }
   ],
+  "products": [
+    {
+      "barcode": "1234567890123",
+      "name": "Producto A",
+      "description": "Descripción del producto A",
+      "price": 123.45,
+      "provider": "Proveedor A",
+      "category": "dry food"
+    },
+    {
+      "barcode": "2345678901234",
+      "name": "Producto B",
+      "description": "Descripción del producto B",
+      "price": 234.56,
+      "provider": "Proveedor B",
+      "category": "canned food"
+    },
+    {
+      "barcode": "3456789012345",
+      "name": "Producto C",
+      "description": "Descripción del producto C",
+      "price": 345.67,
+      "provider": "Proveedor C",
+      "category": "beverages"
+    },
+    {
+      "barcode": "4567890123456",
+      "name": "Producto D",
+      "description": "Descripción del producto D",
+      "price": 456.78,
+      "provider": "Proveedor D",
+      "category": "fresh products"
+    },
+    {
+      "barcode": "5678901234567",
+      "name": "Producto E",
+      "description": "Descripción del producto E",
+      "price": 567.89,
+      "provider": "Proveedor E",
+      "category": "frozen food"
+    },
+    {
+      "barcode": "6789012345678",
+      "name": "Producto F",
+      "description": "Descripción del producto F",
+      "price": 678.9,
+      "provider": "Proveedor F",
+      "category": "meat and seafood"
+    },
+    {
+      "barcode": "7890123456789",
+      "name": "Producto G",
+      "description": "Descripción del producto G",
+      "price": 789.01,
+      "provider": "Proveedor G",
+      "category": "cleaning products"
+    },
+    {
+      "barcode": "8901234567890",
+      "name": "Producto H",
+      "description": "Descripción del producto H",
+      "price": 890.12,
+      "provider": "Proveedor H",
+      "category": "personal care"
+    },
+    {
+      "barcode": "9012345678901",
+      "name": "Producto I",
+      "description": "Descripción del producto I",
+      "price": 901.23,
+      "provider": "Proveedor I",
+      "category": "snacks and sweets"
+    }
+  ],
   "store_branches": [
     {
       "name": "Sucursal A",

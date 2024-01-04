@@ -17,7 +17,7 @@ class Product implements JsonSerializable
     public const PRODUCT_CATEGORY_BEVERAGES = 'beverages';
     public const PRODUCT_CATEGORY_FRESH_FOOD = 'fresh products';
     public const PRODUCT_CATEGORY_FROZEN_FOOD = 'frozen food';
-    public const PRODUCT_CATEGORY_MEET_AND_SEAFOOD = 'meet and seafood';
+    public const PRODUCT_CATEGORY_MEAT_AND_SEAFOOD = 'meat and seafood';
     public const PRODUCT_CATEGORY_CLEANING = 'cleaning products';
     public const PRODUCT_CATEGORY_PERSONAL_CARE = 'personal care';
     public const PRODUCT_CATEGORY_SNACKS_AND_SWEETS = 'snacks and sweets';
@@ -29,7 +29,7 @@ class Product implements JsonSerializable
         self::PRODUCT_CATEGORY_BEVERAGES,
         self::PRODUCT_CATEGORY_FRESH_FOOD,
         self::PRODUCT_CATEGORY_FROZEN_FOOD,
-        self::PRODUCT_CATEGORY_MEET_AND_SEAFOOD,
+        self::PRODUCT_CATEGORY_MEAT_AND_SEAFOOD,
         self::PRODUCT_CATEGORY_CLEANING,
         self::PRODUCT_CATEGORY_PERSONAL_CARE,
         self::PRODUCT_CATEGORY_SNACKS_AND_SWEETS,
