@@ -26,6 +26,10 @@ use App\Application\Actions\PaymentMethod\CreatePaymentMethodAction;
 use App\Application\Actions\PaymentMethod\DeletePaymentMethodAction;
 use App\Application\Actions\PaymentMethod\ViewPaymentMethodsAction;
 use App\Application\Actions\PaymentMethod\UpdatePaymentMethodAction;
+use App\Application\Actions\ShippingAddress\CreateShippingAddressAction;
+use App\Application\Actions\ShippingAddress\DeleteShippingAddressAction;
+use App\Application\Actions\ShippingAddress\UpdateShippingAddressAction;
+use App\Application\Actions\ShippingAddress\ViewShippingAddressesAction;
 use App\Application\Middleware\AdminAuthMiddleware;
 use App\Application\Middleware\AuthMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -57,6 +61,13 @@ return function (App $app) {
         $group->post('', CreatePaymentMethodAction::class);
         $group->put('/{paymentMethodId:[0-9]+}', UpdatePaymentMethodAction::class);
         $group->delete('/{paymentMethodId:[0-9]+}', DeletePaymentMethodAction::class);
+    })->add(AuthMiddleware::class);
+
+    $app->group('/users/{userId:[0-9]+}/shippingaddresses', function (Group $group) {
+        $group->get('/', ViewShippingAddressesAction::class);
+        $group->post('', CreateShippingAddressAction::class);
+        $group->put('/{shippingAddressId:[0-9]+}', UpdateShippingAddressAction::class);
+        $group->delete('/{shippingAddressId:[0-9]+}', DeleteShippingAddressAction::class);
     })->add(AuthMiddleware::class);
 
     $app->group('/auth', function (Group $group) {
