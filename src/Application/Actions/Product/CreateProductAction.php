@@ -15,7 +15,9 @@ class CreateProductAction extends ProductAction
 {
     protected function action(): Response
     {
-        $newProductData = $this->getFormData();
+        $formData = $this->request->getParsedBody();
+        $formText = $formData["productData"] ?? null;
+        $newProductData = json_decode($formText, true);
         if(is_null($newProductData)) {
             $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid request body.');
             return $this->respondWithData($error, 400);
@@ -40,7 +42,7 @@ class CreateProductAction extends ProductAction
         }
 
         $price = $newProductData['price'];
-        if(!isset($price) || !is_double($price)) {
+        if(!isset($price) || !is_float($price)) {
             $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid price.');
             return $this->respondWithData($error, 400);
         }
@@ -57,6 +59,23 @@ class CreateProductAction extends ProductAction
             return $this->respondWithData($error, 400);
         }
 
+        $uploadedFiles = $this->request->getUploadedFiles();
+        $productImage = $uploadedFiles['image'] ?? null;
+        if($productImage->getError() !== UPLOAD_ERR_OK) {
+            $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid image.');
+            return $this->respondWithData($error, 400);
+        }
+
+        // Check if the image extension is valid
+        $imageExtension = pathinfo($productImage->getClientFilename(), PATHINFO_EXTENSION);
+        if(!in_array($imageExtension, $this->settings->get('allowedImageExtensions'))) {
+            $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid image extension.');
+            return $this->respondWithData($error, 400);
+        }
+        $imagesDir = $this->settings->get('imagesPath');
+        $randomUUID = uniqid();
+        $productImage->moveTo("$imagesDir/$randomUUID.$imageExtension");
+
         try {
             $product = new Product(
                 $barcode,
@@ -64,7 +83,8 @@ class CreateProductAction extends ProductAction
                 $description,
                 $price,
                 $provider,
-                $category
+                $category,
+                image: "$randomUUID.$imageExtension"
             );
 
             $this->productRepository->save($product);

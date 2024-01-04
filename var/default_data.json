@@ -45,7 +45,7 @@
             "description": "Descripción del producto A",
             "price": 123.45,
             "provider": "Proveedor A",
-            "category": "dry food"
+            "category": "Alimentos secos"
         },
         {
             "barcode": "2345678901234",
@@ -53,7 +53,7 @@
             "description": "Descripción del producto B",
             "price": 234.56,
             "provider": "Proveedor B",
-            "category": "dry food"
+            "category": "Alimentos secos"
         },
         {
             "barcode": "3456789012345",
@@ -61,7 +61,7 @@
             "description": "Descripción del producto C",
             "price": 345.67,
             "provider": "Proveedor C",
-            "category": "dry food"
+            "category": "Alimentos secos"
         },
         {
             "barcode": "4567890123456",
@@ -69,7 +69,7 @@
             "description": "Descripción del producto D",
             "price": 456.78,
             "provider": "Proveedor D",
-            "category": "dry food"
+            "category": "Alimentos secos"
         },
         {
             "barcode": "5678901234567",
@@ -77,7 +77,7 @@
             "description": "Descripción del producto E",
             "price": 567.89,
             "provider": "Proveedor E",
-            "category": "dry food"
+            "category": "Alimentos secos"
         },
         {
             "barcode": "6789012345678",
@@ -85,7 +85,7 @@
             "description": "Descripción del producto F",
             "price": 678.90,
             "provider": "Proveedor F",
-            "category": "dry food"
+            "category": "Alimentos secos"
         },
         {
             "barcode": "7890123456789",
@@ -93,7 +93,7 @@
             "description": "Descripción del producto G",
             "price": 789.01,
             "provider": "Proveedor G",
-            "category": "dry food"
+            "category": "Alimentos secos"
         },
         {
             "barcode": "8901234567890",
@@ -101,7 +101,7 @@
             "description": "Descripción del producto H",
             "price": 890.12,
             "provider": "Proveedor H",
-            "category": "dry food"
+            "category": "Alimentos secos"
         },
         {
             "barcode": "9012345678901",
@@ -109,7 +109,7 @@
             "description": "Descripción del producto I",
             "price": 901.23,
             "provider": "Proveedor I",
-            "category": "dry food"
+            "category": "Alimentos secos"
         }
     ]
 }

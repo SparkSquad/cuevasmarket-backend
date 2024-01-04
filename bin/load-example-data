@@ -73,7 +73,8 @@ function load_default_product_data(EntityManager $entityManager): void
             description: $productData['description'],
             price: $productData['price'],
             provider: $productData['provider'],
-            category: $productData['category']
+            category: $productData['category'],
+            image: "659611af2ab8c.jpg"
         );
         echo 'Creating product ' . $product->getName() . PHP_EOL;
         $entityManager->persist($product);
