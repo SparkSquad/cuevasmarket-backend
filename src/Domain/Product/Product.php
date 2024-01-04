@@ -112,6 +112,7 @@ class Product implements JsonSerializable
     {
         return [
             'id' => $this->getId(),
+            'barcode' => $this->getBarcode(),
             'name' => $this->getName(),
             'description' => $this->getDescription(),
             'price' => $this->getPrice(),

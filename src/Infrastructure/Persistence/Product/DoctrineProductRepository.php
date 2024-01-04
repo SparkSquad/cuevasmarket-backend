@@ -8,6 +8,7 @@ use App\Domain\Product\Product;
 use App\Domain\Product\ProductAlreadyExistsException;
 use App\Domain\Product\ProductNotFoundException;
 use App\Domain\Product\ProductRepository;
+use App\Domain\Product\ProductSearchResultsDTO;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ObjectRepository;
 
@@ -27,7 +28,7 @@ class DoctrineProductRepository implements ProductRepository
         return $this->repository->find($id);
     }
 
-    public function search(string $keyword, int $maxResults, int $page, ?string $category = null): array
+    public function search(string $keyword, int $maxResults, int $page, ?string $category = null): ProductSearchResultsDTO
     {
         if ($category) {
             $query = $this->em->createQueryBuilder()
@@ -40,7 +41,21 @@ class DoctrineProductRepository implements ProductRepository
                 ->setFirstResult($maxResults * ($page - 1))
                 ->setMaxResults($maxResults)
                 ->getQuery();
-            return $query->getResult();
+            $results = $query->getResult();
+
+            // Get the total number of pages
+            $query = $this->em->createQueryBuilder()
+                ->select('COUNT(product)')
+                ->from(Product::class, 'product')
+                ->where('product.name LIKE :keyword')
+                ->andWhere('product.category = :category')
+                ->setParameter('keyword', '%' . $keyword . '%')
+                ->setParameter('category', $category)
+                ->getQuery();
+            $totalElems = $query->getSingleScalarResult();
+            $totalPages = intval(ceil($totalElems / $maxResults));
+
+            return new ProductSearchResultsDTO($results, $totalPages, $page);
         }
         else {
             $query = $this->em->createQueryBuilder()
@@ -51,7 +66,20 @@ class DoctrineProductRepository implements ProductRepository
                 ->setFirstResult($maxResults * ($page - 1))
                 ->setMaxResults($maxResults)
                 ->getQuery();
-            return $query->getResult();
+            $results = $query->getResult();
+
+            // Get the total number of pages
+            $query = $this->em->createQueryBuilder()
+                ->select('COUNT(product)')
+                ->from(Product::class, 'product')
+                ->where('product.name LIKE :keyword')
+                ->setParameter('keyword', '%' . $keyword . '%')
+                ->getQuery();
+
+            $totalElems = $query->getSingleScalarResult();
+            $totalPages = intval(ceil($totalElems / $maxResults));
+
+            return new ProductSearchResultsDTO($results, $totalPages, $page);
         }
     }
 

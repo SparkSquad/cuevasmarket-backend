@@ -12,8 +12,8 @@ use App\Application\Actions\User\DeleteUserAction;
 use App\Application\Actions\Product\ViewProductAction;
 use App\Application\Actions\Product\CreateProductAction;
 use App\Application\Actions\Product\UpdateProductAction;
-use App\Application\Actions\Product\SearchProductAction;
 use App\Application\Actions\Product\DeleteProductAction;
+use App\Application\Actions\Product\SearchProductsAction;
 use App\Application\Actions\ProductStock\ViewProductStockAction;
 use App\Application\Actions\ProductStock\ViewProductStockListAction;
 use App\Application\Actions\ProductStock\ViewStoreBranchProductStock;
@@ -56,7 +56,7 @@ return function (App $app) {
 
     $app->group('/products', function (Group $group) {
         $group->get('/{id:[0-9]+}', ViewProductAction::class);
-        // $group->get('/search/[{keyword}]', SearchProductAction::class);
+        $group->get('/search/[{keyword}]', SearchProductsAction::class);
         $group->post('', CreateProductAction::class)->add(AdminAuthMiddleware::class);
         $group->put('/{id:[0-9]+}', UpdateProductAction::class)->add(AdminAuthMiddleware::class);
         $group->delete('/{id:[0-9]+}', DeleteProductAction::class)->add(AdminAuthMiddleware::class);
