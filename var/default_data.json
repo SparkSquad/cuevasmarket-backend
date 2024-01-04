@@ -1,41 +1,58 @@
 {
-    "users": [
-        {
-            "username": "admin",
-            "phoneNumber": null,
-            "password": "Admin1234.",
-            "firstName": "Admin",
-            "surnames": "Vadam",
-            "type": "admin"
-        }
-    ],
-    "store_branches": [
-        {
-          "name": "Sucursal A",
-          "address": "Calle Principal 123",
-          "city": "Ciudad A",
-          "latitude": "12.3456",
-          "longitude": "-78.9012",
-          "openingHours": "09:00",
-          "closingHours": "18:00"
-        },
-        {
-          "name": "Sucursal B",
-          "address": "Avenida Principal 456",
-          "city": "Ciudad B",
-          "latitude": "34.5678",
-          "longitude": "-56.7890",
-          "openingHours": "10:00",
-          "closingHours": "19:30"
-        },
-        {
-          "name": "Sucursal C",
-          "address": "Plaza Central 789",
-          "city": "Ciudad C",
-          "latitude": "45.6789",
-          "longitude": "-67.8901",
-          "openingHours": "08:30",
-          "closingHours": "17:45"
-        }
-    ]
+  "users": [
+    {
+      "username": "admin",
+      "phoneNumber": null,
+      "password": "Admin1234.",
+      "firstName": "Admin",
+      "surnames": "Vadam",
+      "type": "admin"
+    },
+    {
+      "username": "user",
+      "phoneNumber": "12345678",
+      "password": "User1234.",
+      "firstName": "John",
+      "surnames": "Doe",
+      "type": "customer"
+    }
+  ],
+  "store_branches": [
+    {
+      "name": "Sucursal A",
+      "address": "Calle Principal 123",
+      "city": "Ciudad A",
+      "latitude": "12.3456",
+      "longitude": "-78.9012",
+      "openingHours": "09:00",
+      "closingHours": "18:00"
+    },
+    {
+      "name": "Sucursal B",
+      "address": "Avenida Principal 456",
+      "city": "Ciudad B",
+      "latitude": "34.5678",
+      "longitude": "-56.7890",
+      "openingHours": "10:00",
+      "closingHours": "19:30"
+    },
+    {
+      "name": "Sucursal C",
+      "address": "Plaza Central 789",
+      "city": "Ciudad C",
+      "latitude": "45.6789",
+      "longitude": "-67.8901",
+      "openingHours": "08:30",
+      "closingHours": "17:45"
+    }
+  ],
+  "payment_methods": [
+    {
+      "userId": 1,
+      "cardNumber": "1234567890123456",
+      "cardHolder": "John Doe",
+      "expirationDate": "12/25",
+      "securityCode": "123"
+    }
+  ]
 }

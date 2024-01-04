@@ -22,6 +22,10 @@ use App\Application\Actions\StoreBranch\DeleteStoreBranchAction;
 use App\Application\Actions\StoreBranch\SearchStoreBranchAction;
 use App\Application\Actions\StoreBranch\UpdateStoreBranchAction;
 use App\Application\Actions\StoreBranch\ViewStoreBranchAction;
+use App\Application\Actions\PaymentMethod\CreatePaymentMethodAction;
+use App\Application\Actions\PaymentMethod\DeletePaymentMethodAction;
+use App\Application\Actions\PaymentMethod\ViewPaymentMethodsAction;
+use App\Application\Actions\PaymentMethod\UpdatePaymentMethodAction;
 use App\Application\Middleware\AdminAuthMiddleware;
 use App\Application\Middleware\AuthMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -47,6 +51,13 @@ return function (App $app) {
         $group->put('/{id:[0-9]+}', UpdateUserAction::class);
         $group->delete('/{id:[0-9]+}', DeleteUserAction::class);
     })->add(AdminAuthMiddleware::class);
+
+    $app->group('/users/{userId:[0-9]+}/paymentmethods', function (Group $group) {
+        $group->get('/', ViewPaymentMethodsAction::class);
+        $group->post('', CreatePaymentMethodAction::class);
+        $group->put('/{paymentMethodId:[0-9]+}', UpdatePaymentMethodAction::class);
+        $group->delete('/{paymentMethodId:[0-9]+}', DeletePaymentMethodAction::class);
+    })->add(AuthMiddleware::class);
 
     $app->group('/auth', function (Group $group) {
         $group->post('/login', AuthUserAction::class);
