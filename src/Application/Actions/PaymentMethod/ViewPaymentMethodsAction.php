@@ -10,20 +10,17 @@ use App\Domain\PaymentMethod\PaymentMethodRepository;
 use App\Application\Actions\ActionError;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class ViewPaymentMethodAction extends PaymentMethodAction
+class ViewPaymentMethodsAction extends PaymentMethodAction
 {
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $loggedUser = $this->request->getAttribute('loggedUser');
-        $userId = (int) $loggedUser['id'];
-
-        $paymentMethodId = (int) $this->resolveArg('id');
+        $userId = (int) $this->resolveArg('userId');
         try {
-            $paymentMethod = $this->paymentMethodRepository->findById($paymentMethodId);
-            if($paymentMethod->getUserId() !== $userId) {
+            $paymentMethods = $this->paymentMethodRepository->findByUserId($userId);
+            if(is_null($paymentMethods)) {
                 $error = new ActionError(ActionError::RESOURCE_NOT_FOUND, 'Payment method not found.');
                 return $this->respondWithData($error, 404);
             }
@@ -31,7 +28,6 @@ class ViewPaymentMethodAction extends PaymentMethodAction
             $error = new ActionError(ActionError::RESOURCE_NOT_FOUND, 'Payment method not found.');
             return $this->respondWithData($error, 404);
         }
-
-        return $this->respondWithData($paymentMethod);
+        return $this->respondWithData($paymentMethods);
     }
 }

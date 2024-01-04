@@ -24,7 +24,7 @@ use App\Application\Actions\StoreBranch\UpdateStoreBranchAction;
 use App\Application\Actions\StoreBranch\ViewStoreBranchAction;
 use App\Application\Actions\PaymentMethod\CreatePaymentMethodAction;
 use App\Application\Actions\PaymentMethod\DeletePaymentMethodAction;
-use App\Application\Actions\PaymentMethod\ViewPaymentMethodAction;
+use App\Application\Actions\PaymentMethod\ViewPaymentMethodsAction;
 use App\Application\Actions\PaymentMethod\UpdatePaymentMethodAction;
 use App\Application\Middleware\AdminAuthMiddleware;
 use App\Application\Middleware\AuthMiddleware;
@@ -52,6 +52,13 @@ return function (App $app) {
         $group->delete('/{id:[0-9]+}', DeleteUserAction::class);
     })->add(AdminAuthMiddleware::class);
 
+    $app->group('/users/{userId:[0-9]+}/paymentmethods', function (Group $group) {
+        $group->get('/', ViewPaymentMethodsAction::class);
+        $group->post('', CreatePaymentMethodAction::class);
+        $group->put('/{paymentMethodId:[0-9]+}', UpdatePaymentMethodAction::class);
+        $group->delete('/{paymentMethodId:[0-9]+}', DeletePaymentMethodAction::class);
+    })->add(AuthMiddleware::class);
+
     $app->group('/auth', function (Group $group) {
         $group->post('/login', AuthUserAction::class);
         $group->get('/verify', VerifyUserAuthAction::class)->add(AuthMiddleware::class);
@@ -75,12 +82,5 @@ return function (App $app) {
         $group->delete('/{id:[0-9]+}', DeleteStoreBranchAction::class)->add(AdminAuthMiddleware::class);
         $group->get('/{branchId:[0-9]+}/productstock', ViewStoreBranchProductStock::class);
         $group->get('/{branchId:[0-9]+}/productstock/{productId:[0-9]+}', ViewProductStockAction::class);
-    });
-
-    $app->group('/paymentmethods', function (Group $group) {
-        $group->get('/{id:[0-9]+}', ViewPaymentMethodAction::class);
-        $group->post('', CreatePaymentMethodAction::class)->add(AuthMiddleware::class);
-        $group->put('/{id:[0-9]+}', UpdatePaymentMethodAction::class)->add(AuthMiddleware::class);
-        $group->delete('/{id:[0-9]+}', DeletePaymentMethodAction::class)->add(AuthMiddleware::class);
     });
 };

@@ -6,6 +6,7 @@ use App\Domain\Product\ProductRepository;
 use App\Domain\Store\StoreBranchRepository;
 use App\Domain\User\UserRepository;
 use App\Domain\PaymentMethod\PaymentMethodRepository;
+use App\Infrastructure\Persistence\PaymentMethod\DoctrinePaymentMethodRepository;
 use App\Infrastructure\Persistence\Product\DoctrineProductRepository;
 use App\Infrastructure\Persistence\Store\DoctrineStoreBranchRepository;
 use App\Infrastructure\Persistence\User\DoctrineUserRepository;
