@@ -7,6 +7,7 @@ namespace App\Infrastructure\Persistence\ProductStock;
 use App\Domain\Product\Product;
 use App\Domain\ProductStock\ProductStock;
 use App\Domain\ProductStock\ProductStockRepository;
+use App\Domain\Store\StoreBranch;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ObjectRepository;
 

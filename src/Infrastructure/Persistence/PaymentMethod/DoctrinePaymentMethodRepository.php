@@ -30,7 +30,7 @@ class DoctrinePaymentMethodRepository implements PaymentMethodRepository
         $query = $this->em->createQueryBuilder()
             ->select('paymentMethod')
             ->from(PaymentMethod::class, 'paymentMethod')
-            ->where('paymentMethod.userId = :userId')
+            ->where('paymentMethod.user = :userId')
             ->setParameter('userId', $userId)
             ->getQuery();
         return $query->getResult();

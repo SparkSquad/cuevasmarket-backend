@@ -20,7 +20,7 @@ class PaymentMethod implements JsonSerializable
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
-    private int $userId;
+    private User $user;
 
     #[ORM\Column(type: 'string')]
     private string $cardNumber;
@@ -35,13 +35,13 @@ class PaymentMethod implements JsonSerializable
     private string $securityCode;
 
     public function __construct(
-        int $userId,
+        User $user,
         string $cardNumber,
         string $holderName,
         string $expirationDate,
         string $securityCode
     ) {
-        $this->userId = $userId;
+        $this->user = $user;
         $this->cardNumber = $cardNumber;
         $this->holderName = $holderName;
         $this->expirationDate = $expirationDate;
@@ -53,9 +53,9 @@ class PaymentMethod implements JsonSerializable
         return $this->id;
     }
 
-    public function getUserId(): int
+    public function getUser(): User
     {
-        return $this->userId;
+        return $this->user;
     }
 
     public function getCardNumber(): string
@@ -78,9 +78,9 @@ class PaymentMethod implements JsonSerializable
         return $this->securityCode;
     }
 
-    public function setUserId(int $userId): void
+    public function setUser(User $user): void
     {
-        $this->userId = $userId;
+        $this->user = $user;
     }
 
     public function setCardNumber(string $cardNumber): void
@@ -107,10 +107,10 @@ class PaymentMethod implements JsonSerializable
     {
         return [
             'id' => $this->id,
-            'card_number' => $this->cardNumber,
-            'holder_name' => $this->holderName,
-            'expiration_date' => $this->expirationDate,
-            'security_code' => $this->securityCode,
+            'cardNumber' => $this->cardNumber,
+            'holderName' => $this->holderName,
+            'expirationDate' => $this->expirationDate,
+            'securityCode' => $this->securityCode,
         ];
     }
 

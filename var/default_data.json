@@ -7,6 +7,14 @@
       "firstName": "Admin",
       "surnames": "Vadam",
       "type": "admin"
+    },
+    {
+      "username": "user",
+      "phoneNumber": "12345678",
+      "password": "User1234.",
+      "firstName": "John",
+      "surnames": "Doe",
+      "type": "customer"
     }
   ],
   "store_branches": [
@@ -40,11 +48,11 @@
   ],
   "payment_methods": [
     {
-      "user_id": 1,
-      "card_number": "1234567890123456",
-      "card_holder": "John Doe",
-      "expiration_date": "12/25",
-      "security_code": "123"
+      "userId": 1,
+      "cardNumber": "1234567890123456",
+      "cardHolder": "John Doe",
+      "expirationDate": "12/25",
+      "securityCode": "123"
     }
   ]
 }
