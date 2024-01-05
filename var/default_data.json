@@ -133,7 +133,7 @@
     {
       "userId": 1,
       "name": "John Doe",
-      "address": "Calle Principal 123",
+      "streetAddress": "Calle Principal 123",
       "city": "Ciudad A",
       "state": "Estado A",
       "zipCode": "12345"

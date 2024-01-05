@@ -30,6 +30,14 @@ use App\Application\Actions\ShippingAddress\CreateShippingAddressAction;
 use App\Application\Actions\ShippingAddress\DeleteShippingAddressAction;
 use App\Application\Actions\ShippingAddress\UpdateShippingAddressAction;
 use App\Application\Actions\ShippingAddress\ViewShippingAddressesAction;
+use App\Application\Actions\Order\CreateOrderAction;
+use App\Application\Actions\Order\DeleteOrderAction;
+use App\Application\Actions\Order\SearchOrdersAction;
+use App\Application\Actions\Order\UpdateOrderAction;
+use App\Application\Actions\Order\ViewOrderAction;
+use App\Application\Actions\OrderItems\CreateOrderItemsAction;
+use App\Application\Actions\OrderItems\UpdateOrderItemsAction;
+use App\Application\Actions\OrderItems\ViewOrderItemsAction;
 use App\Application\Middleware\AdminAuthMiddleware;
 use App\Application\Middleware\AuthMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -83,6 +91,17 @@ return function (App $app) {
         $group->put('/{id:[0-9]+}', UpdateProductAction::class)->add(AdminAuthMiddleware::class);
         $group->delete('/{id:[0-9]+}', DeleteProductAction::class)->add(AdminAuthMiddleware::class);
         $group->get('/{productId:[0-9]+}/stock', ViewProductStockListAction::class);
+    });
+
+    $app->group('/orders', function (Group $group) {
+        $group->get('/{id:[0-9]+}', ViewOrderAction::class);
+        $group->get('/search/[{keyword}]', SearchOrdersAction::class);
+        $group->post('', CreateOrderAction::class)->add(AuthMiddleware::class);
+        $group->put('/{id:[0-9]+}', UpdateOrderAction::class)->add(AuthMiddleware::class);
+        $group->delete('/{id:[0-9]+}', DeleteOrderAction::class)->add(AuthMiddleware::class);
+        $group->get('/{orderId:[0-9]+}/items', ViewOrderItemsAction::class);
+        $group->post('/{orderId:[0-9]+}/items', CreateOrderItemsAction::class)->add(AuthMiddleware::class);
+        $group->put('/{orderId:[0-9]+}/items/{orderItemId:[0-9]+}', UpdateOrderItemsAction::class)->add(AuthMiddleware::class);
     });
 
     $app->group('/storebranches', function (Group $group) {

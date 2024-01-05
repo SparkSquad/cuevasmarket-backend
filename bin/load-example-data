@@ -2,6 +2,7 @@
 <?php
 
 use App\Domain\PaymentMethod\PaymentMethod;
+use App\Domain\ShippingAddress\ShippingAddress;
 use App\Domain\Store\StoreBranch;
 use Doctrine\ORM\EntityManager;
 use DI\ContainerBuilder;
