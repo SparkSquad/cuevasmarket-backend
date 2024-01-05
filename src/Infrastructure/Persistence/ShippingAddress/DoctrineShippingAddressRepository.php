@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\ShippingAddress;
+namespace App\Infrastructure\Persistence\ShippingAddress;
 
 use App\Domain\ShippingAddress\ShippingAddress;
 use App\Domain\ShippingAddress\ShippingAddressRepository;
