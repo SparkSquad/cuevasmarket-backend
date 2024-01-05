@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\User;
 
+use App\Domain\Store\StoreBranch;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use JsonSerializable;
@@ -40,7 +41,11 @@ class User implements JsonSerializable
     #[ORM\Column(type: 'string')]
     private string $type;
 
-    public function __construct(string $username, string $firstName, string $surnames, string|null $phoneNumber, string $password, string $type)
+    #[ORM\ManyToOne(targetEntity: StoreBranch::class)]
+    #[ORM\JoinColumn(name: 'store_branch_id', referencedColumnName: 'id', nullable: true)]
+    private StoreBranch|null $storeBranch;
+
+    public function __construct(string $username, string $firstName, string $surnames, string|null $phoneNumber, string $password, string $type, StoreBranch|null $storeBranch = null)
     {
         if(!in_array($type, [self::USER_TYPE_ADMIN, self::USER_TYPE_CUSTOMER, self::USER_TYPE_MANAGER, self::USER_TYPE_DELIVERY_MAN])) {
             throw new UserInvalidTypeException();
@@ -51,6 +56,7 @@ class User implements JsonSerializable
         $this->phoneNumber = $phoneNumber;
         $this->password = password_hash($password, PASSWORD_DEFAULT);
         $this->type = $type;
+        $this->storeBranch = $storeBranch;
     }
 
     public function getId(): int|null
@@ -113,15 +119,16 @@ class User implements JsonSerializable
         $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
-    #[\ReturnTypeWillChange]
     public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,
+            'username' => $this->username,
             'firstName' => $this->firstName,
             'surnames' => $this->surnames,
             'phoneNumber' => $this->phoneNumber,
-            'type' => $this->type
+            'type' => $this->type,
+            'storeBranch' => $this->storeBranch
         ];
     }
 }

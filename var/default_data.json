@@ -7,6 +7,14 @@
             "firstName": "Admin",
             "surnames": "Vadam",
             "type": "admin"
+        },
+        {
+            "username": "manager",
+            "phoneNumber": null,
+            "password": "Manager1234.",
+            "firstName": "Manager",
+            "surnames": "Vadam",
+            "type": "manager"
         }
     ],
     "store_branches": [

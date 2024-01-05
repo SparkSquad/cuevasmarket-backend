@@ -36,6 +36,14 @@ interface ProductStockRepository
     public function findByProductId(int $productId): ?array;
 
     /**
+     * @param int $storeBranchId
+     * @param int $productId
+     * @param int $quantity
+     * @return ProductStock[]
+     */
+    public function addProductStock(int $storeBranchId, int $productId, int $quantity): ProductStock;
+
+    /**
      * @param string $storeId
      * @param string $keyword
      * @param int $maxResults

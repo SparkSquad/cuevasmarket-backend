@@ -11,7 +11,7 @@ use App\Domain\User\UserInvalidTypeException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Exception;
 
-class RegisterUserAction extends UserAction
+class RegisterCustomerAction extends UserAction
 {
     /**
      * {@inheritdoc}
@@ -42,51 +42,20 @@ class RegisterUserAction extends UserAction
             return $this->respondWithData($error, 400);
         }
 
-        $loggedUser = $this->request->getAttribute('loggedUser');
-        $type = User::USER_TYPE_CUSTOMER;
-        if(isset($loggedUser) && $loggedUser['type'] === User::USER_TYPE_ADMIN) {
-            if(isset($newUserData['type']) && is_string($newUserData['type'])) {
-                $type = $newUserData['type'];
-            }
-        }
-
-        $username = "";
-        $phoneNumber = null;
-        if($type == User::USER_TYPE_CUSTOMER) {
-            $phoneNumber = $newUserData['phoneNumber'];
-            if(!isset($phoneNumber) || !is_string($phoneNumber)) {
-                $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid phone number.');
-                return $this->respondWithData($error, 400);
-            }
-            $username = $phoneNumber;
-        }
-        else {
-            $username = $newUserData['username'];
-            if(!isset($username) || !is_string($username)) {
-                $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid username.');
-                return $this->respondWithData($error, 400);
-            }
-        }
-
-        $storeBranch = null;
-        if($type == User::USER_TYPE_MANAGER && isset($newUserData['storeBranchId'])) {
-            $storeBranchId = $newUserData['storeBranchId'];
-            if(!is_int(intval($storeBranchId))) {
-                $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid store branch id.');
-                return $this->respondWithData($error, 400);
-            }
-            $storeBranch = $this->storeBranchRepository->findById(intval($storeBranchId));
+        $phoneNumber = $newUserData['phoneNumber'];
+        if(!isset($phoneNumber) || !is_string($phoneNumber)) {
+            $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid phone number.');
+            return $this->respondWithData($error, 400);
         }
 
         try {
             $user = new User(
-                $username,
+                $phoneNumber,
                 $firstName,
                 $surnames,
                 $phoneNumber,
                 $password,
-                $type,
-                $storeBranch
+                User::USER_TYPE_CUSTOMER
             );
             $this->userRepository->save($user);
             return $this->respondWithData(null, 201);

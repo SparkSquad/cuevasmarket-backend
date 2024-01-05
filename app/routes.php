@@ -19,9 +19,11 @@ use App\Application\Actions\ProductStock\ViewProductStockListAction;
 use App\Application\Actions\ProductStock\ViewStoreBranchProductStock;
 use App\Application\Actions\StoreBranch\CreateStoreBranchAction;
 use App\Application\Actions\StoreBranch\DeleteStoreBranchAction;
+use App\Application\Actions\StoreBranch\GetAllStoreBranchesAction;
 use App\Application\Actions\StoreBranch\SearchStoreBranchAction;
 use App\Application\Actions\StoreBranch\UpdateStoreBranchAction;
 use App\Application\Actions\StoreBranch\ViewStoreBranchAction;
+use App\Application\Actions\User\RegisterCustomerAction;
 use App\Application\Middleware\AdminAuthMiddleware;
 use App\Application\Middleware\AuthMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -51,7 +53,7 @@ return function (App $app) {
     $app->group('/auth', function (Group $group) {
         $group->post('/login', AuthUserAction::class);
         $group->get('/verify', VerifyUserAuthAction::class)->add(AuthMiddleware::class);
-        $group->post('/register', RegisterUserAction::class);
+        $group->post('/register', RegisterCustomerAction::class);
     });
 
     $app->group('/products', function (Group $group) {
@@ -64,6 +66,7 @@ return function (App $app) {
     });
 
     $app->group('/storebranches', function (Group $group) {
+        $group->get('', GetAllStoreBranchesAction::class);
         $group->get('/{id:[0-9]+}', ViewStoreBranchAction::class);
         $group->get('/search/[{keyword}]', SearchStoreBranchAction::class);
         $group->post('', CreateStoreBranchAction::class)->add(AdminAuthMiddleware::class);
@@ -71,5 +74,6 @@ return function (App $app) {
         $group->delete('/{id:[0-9]+}', DeleteStoreBranchAction::class)->add(AdminAuthMiddleware::class);
         $group->get('/{branchId:[0-9]+}/productstock', ViewStoreBranchProductStock::class);
         $group->get('/{branchId:[0-9]+}/productstock/{productId:[0-9]+}', ViewProductStockAction::class);
+        $group->put('/{branchId:[0-9]+}/productstock/{productId:[0-9]+}', ViewProductStockAction::class);
     });
 };

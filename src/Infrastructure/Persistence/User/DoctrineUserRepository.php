@@ -8,6 +8,7 @@ use App\Domain\User\User;
 use App\Domain\User\UserAlreadyExistsException;
 use App\Domain\User\UserNotFoundException;
 use App\Domain\User\UserRepository;
+use App\Domain\User\UsersSearchResultsDTO;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ObjectRepository;
 
@@ -38,7 +39,7 @@ class DoctrineUserRepository implements UserRepository
         return $this->repository->findOneBy(['username' => $username]);
     }
 
-    public function search(string $keyword, int $maxResults, int $page): array
+    public function search(string $keyword, int $maxResults, int $page): UsersSearchResultsDTO
     {
         $query = $this->em->createQueryBuilder()
             ->select('user')
@@ -50,7 +51,21 @@ class DoctrineUserRepository implements UserRepository
             ->setFirstResult($maxResults * ($page - 1))
             ->setMaxResults($maxResults)
             ->getQuery();
-        return $query->getResult();
+        $results = $query->getResult();
+
+        // Get the total number of pages
+        $totalElemsQuery = $this->em->createQueryBuilder()
+            ->select('count(user.id)')
+            ->from(User::class, 'user')
+            ->where('user.firstName LIKE :keyword')
+            ->orWhere('user.surnames LIKE :keyword')
+            ->orWhere('user.username LIKE :keyword')
+            ->setParameter('keyword', '%' . $keyword . '%')
+            ->getQuery();
+        $totalElems = $totalElemsQuery->getSingleScalarResult();
+        $totalPages = intval(ceil($totalElems / $maxResults));
+
+        return new UsersSearchResultsDTO($results, $totalPages, $page);
     }
 
     public function save(User $user): void

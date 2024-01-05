@@ -65,4 +65,9 @@ class ProductStock implements JsonSerializable
             'stock' => $this->stock
         ];
     }
+
+    public function getStoreBranch(): StoreBranch
+    {
+        return $this->storeBranch;
+    }
 }

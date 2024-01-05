@@ -7,6 +7,7 @@ namespace App\Infrastructure\Persistence\ProductStock;
 use App\Domain\Product\Product;
 use App\Domain\ProductStock\ProductStock;
 use App\Domain\ProductStock\ProductStockRepository;
+use App\Domain\Store\StoreBranch;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ObjectRepository;
 
@@ -106,5 +107,12 @@ class DoctrineProductStockRepository implements ProductStockRepository
     {
         $this->em->remove($stock);
         $this->em->flush();
+    }
+
+    public function addProductStock(int $storeBranchId, int $productId, int $quantity): ProductStock {
+        $productStock = $this->findByProductIdAndStoreBranchId($productId, $storeBranchId);
+        $productStock->setStock($productStock->getStock() + $quantity);
+        $this->update($productStock);
+        return $productStock;
     }
 }
