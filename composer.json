@@ -66,6 +66,7 @@
         "init-database": "php bin/doctrine orm:schema-tool:create",
         "load-example-data": "php bin/load-example-data",
         "update-database": "php bin/doctrine orm:schema-tool:update --force --complete",
-        "prune-database": "php bin/doctrine orm:schema-tool:drop --force"
+        "prune-database": "php bin/doctrine orm:schema-tool:drop --force",
+        "reset-database": "php bin/doctrine orm:schema-tool:drop --force && php bin/doctrine orm:schema-tool:create && php bin/load-example-data"
     }
 }

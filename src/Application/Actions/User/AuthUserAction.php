@@ -58,7 +58,8 @@ class AuthUserAction extends UserAction
                 'surnames' => $user->getSurnames(),
                 'phoneNumber' => $user->getPhoneNumber(),
                 'type' => $user->getType(),
-                'token' => $token
+                'token' => $token,
+                'storeBranch' => $user->getStoreBranch()
             ];
             return $this->respondWithData($responseData);
         } 

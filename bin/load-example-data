@@ -42,25 +42,6 @@ function set_up_default_user(EntityManager $entityManager): void
     $entityManager->flush();
 }
 
-function set_up_default_products(EntityManager $entityManager): void
-{
-    $defaultData = json_decode(file_get_contents(__DIR__ . '/../var/default_data.json'), true);
-
-    foreach ($defaultData['products'] as $productData) {
-        $product = new Product(
-            barcode: $productData['barcode'],
-            name: $productData['name'],
-            description: $productData['description'],
-            price: $productData['price'],
-            provider: $productData['provider'],
-            category: $productData['category']
-        );
-        echo 'Creating product ' . $product->getName() . PHP_EOL;
-        $entityManager->persist($product);
-    }
-    $entityManager->flush();
-}
-
 function load_default_store_branches(EntityManager $entityManager): void
 {
     $defaultData = json_decode(file_get_contents(__DIR__ . '/../var/default_data.json'), true);
@@ -122,8 +103,29 @@ function load_default_shipping_addresses(EntityManager $entityManager): void
     $entityManager->flush();
 }
 
+function load_default_product_data(EntityManager $entityManager): void
+{
+    $defaultData = json_decode(file_get_contents(__DIR__ . '/../var/default_data.json'), true);
+
+    foreach ($defaultData['products'] as $productData) {
+        $product = new Product(
+            barcode: $productData['barcode'],
+            name: $productData['name'],
+            description: $productData['description'],
+            price: $productData['price'],
+            provider: $productData['provider'],
+            category: $productData['category'],
+            image: "659611af2ab8c.jpg"
+        );
+        echo 'Creating product ' . $product->getName() . PHP_EOL;
+        $entityManager->persist($product);
+    }
+    $entityManager->flush();
+}
+
 set_up_default_user($entityManager);
 set_up_default_products($entityManager);
 load_default_store_branches($entityManager);
 load_default_payment_methods($entityManager);
 load_default_shipping_addresses($entityManager);
+load_default_product_data($entityManager);

@@ -19,7 +19,7 @@ interface ProductRepository
      * @param string|null $category
      * @return Product[]
      */
-    public function search(string $keyword, int $maxResults, int $page, string $category = null): array;
+    public function search(string $keyword, int $maxResults, int $page, string $category = null): ProductSearchResultsDTO;
 
     /**
      * @param Product $product

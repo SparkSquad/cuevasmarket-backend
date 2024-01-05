@@ -27,9 +27,9 @@ interface UserRepository
      * @param string $query
      * @param int $elems
      * @param int $page
-     * @return User[]
+     * @return UsersSearchResultsDTO
      */
-    public function search(string $keyword, int $maxResults, int $page): array;
+    public function search(string $keyword, int $maxResults, int $page): UsersSearchResultsDTO;
 
     /**
      * @param User $user

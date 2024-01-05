@@ -12,16 +12,20 @@ use App\Application\Actions\User\DeleteUserAction;
 use App\Application\Actions\Product\ViewProductAction;
 use App\Application\Actions\Product\CreateProductAction;
 use App\Application\Actions\Product\UpdateProductAction;
-use App\Application\Actions\Product\SearchProductsAction;
 use App\Application\Actions\Product\DeleteProductAction;
+use App\Application\Actions\Product\SearchProductsAction;
+use App\Application\Actions\ProductStock\AddProductStockAction;
+use App\Application\Actions\ProductStock\SearchProductStockAction;
 use App\Application\Actions\ProductStock\ViewProductStockAction;
 use App\Application\Actions\ProductStock\ViewProductStockListAction;
 use App\Application\Actions\ProductStock\ViewStoreBranchProductStock;
 use App\Application\Actions\StoreBranch\CreateStoreBranchAction;
 use App\Application\Actions\StoreBranch\DeleteStoreBranchAction;
+use App\Application\Actions\StoreBranch\GetAllStoreBranchesAction;
 use App\Application\Actions\StoreBranch\SearchStoreBranchAction;
 use App\Application\Actions\StoreBranch\UpdateStoreBranchAction;
 use App\Application\Actions\StoreBranch\ViewStoreBranchAction;
+use App\Application\Actions\User\RegisterCustomerAction;
 use App\Application\Actions\PaymentMethod\CreatePaymentMethodAction;
 use App\Application\Actions\PaymentMethod\DeletePaymentMethodAction;
 use App\Application\Actions\PaymentMethod\ViewPaymentMethodsAction;
@@ -40,6 +44,7 @@ use App\Application\Actions\OrderItems\UpdateOrderItemsAction;
 use App\Application\Actions\OrderItems\ViewOrderItemsAction;
 use App\Application\Middleware\AdminAuthMiddleware;
 use App\Application\Middleware\AuthMiddleware;
+use App\Application\Middleware\ManagerAuthMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -81,7 +86,7 @@ return function (App $app) {
     $app->group('/auth', function (Group $group) {
         $group->post('/login', AuthUserAction::class);
         $group->get('/verify', VerifyUserAuthAction::class)->add(AuthMiddleware::class);
-        $group->post('/register', RegisterUserAction::class);
+        $group->post('/register', RegisterCustomerAction::class);
     });
 
     $app->group('/products', function (Group $group) {
@@ -105,12 +110,15 @@ return function (App $app) {
     });
 
     $app->group('/storebranches', function (Group $group) {
+        $group->get('', GetAllStoreBranchesAction::class);
         $group->get('/{id:[0-9]+}', ViewStoreBranchAction::class);
         $group->get('/search/[{keyword}]', SearchStoreBranchAction::class);
         $group->post('', CreateStoreBranchAction::class)->add(AdminAuthMiddleware::class);
         $group->put('/{id:[0-9]+}', UpdateStoreBranchAction::class)->add(AdminAuthMiddleware::class);
         $group->delete('/{id:[0-9]+}', DeleteStoreBranchAction::class)->add(AdminAuthMiddleware::class);
         $group->get('/{branchId:[0-9]+}/productstock', ViewStoreBranchProductStock::class);
+        $group->get('/{branchId:[0-9]+}/productstock/search/[{keyword}]', SearchProductStockAction::class);
         $group->get('/{branchId:[0-9]+}/productstock/{productId:[0-9]+}', ViewProductStockAction::class);
+        $group->put('/{branchId:[0-9]+}/productstock/{productId:[0-9]+}', AddProductStockAction::class)->add(ManagerAuthMiddleware::class);
     });
 };

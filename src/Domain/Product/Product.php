@@ -12,16 +12,16 @@ use JsonSerializable;
 #[ORM\Table(name: 'product')]
 class Product implements JsonSerializable
 {
-    public const PRODUCT_CATEGORY_DRY_FOOD = 'dry food';
-    public const PRODUCT_CATEGORY_CANNED_FOOD = 'canned food';
-    public const PRODUCT_CATEGORY_BEVERAGES = 'beverages';
-    public const PRODUCT_CATEGORY_FRESH_FOOD = 'fresh products';
-    public const PRODUCT_CATEGORY_FROZEN_FOOD = 'frozen food';
-    public const PRODUCT_CATEGORY_MEAT_AND_SEAFOOD = 'meat and seafood';
-    public const PRODUCT_CATEGORY_CLEANING = 'cleaning products';
-    public const PRODUCT_CATEGORY_PERSONAL_CARE = 'personal care';
-    public const PRODUCT_CATEGORY_SNACKS_AND_SWEETS = 'snacks and sweets';
-    public const PRODUCT_CATEGORY_ALCOHOL = 'alcohol';
+    public const PRODUCT_CATEGORY_DRY_FOOD = 'Alimentos secos';
+    public const PRODUCT_CATEGORY_CANNED_FOOD = 'Alimentos enlatados';
+    public const PRODUCT_CATEGORY_BEVERAGES = 'Bebidas';
+    public const PRODUCT_CATEGORY_FRESH_FOOD = 'Productos frescos';
+    public const PRODUCT_CATEGORY_FROZEN_FOOD = 'Alimentos congelados';
+    public const PRODUCT_CATEGORY_MEET_AND_SEAFOOD = 'Carne y mariscos';
+    public const PRODUCT_CATEGORY_CLEANING = 'Productos de limpieza';
+    public const PRODUCT_CATEGORY_PERSONAL_CARE = 'Cuidado personal';
+    public const PRODUCT_CATEGORY_SNACKS_AND_SWEETS = 'Snacks y dulces';
+    public const PRODUCT_CATEGORY_ALCOHOL = 'Alcohol';    
 
     public static array $categories = [
         self::PRODUCT_CATEGORY_DRY_FOOD,
@@ -50,7 +50,7 @@ class Product implements JsonSerializable
     #[ORM\Column(type: 'string')]
     private string $description;
 
-    #[ORM\Column(type: 'decimal')]
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, options: ['default' => '0.00'])]
     private float $price;
 
     #[ORM\Column(type: 'string')]
@@ -59,7 +59,10 @@ class Product implements JsonSerializable
     #[ORM\Column(type: 'string')]
     private string $category;
 
-    public function __construct(string $barcode, string $name, string $description, float $price, string $provider, string $category)
+    #[ORM\Column(type: 'string')]
+    private string $image;
+
+    public function __construct(string $barcode, string $name, string $description, float $price, string $provider, string $category, string $image)
     {
         if (!in_array($category, self::$categories)) {
             throw new ProductInvalidCategoryException();
@@ -71,6 +74,7 @@ class Product implements JsonSerializable
         $this->price = $price;
         $this->provider = $provider;
         $this->category = $category;
+        $this->image = $image;
     }
 
     public function getId(): int|null
@@ -108,15 +112,22 @@ class Product implements JsonSerializable
         return ucfirst($this->category);
     }
 
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
     public function jsonSerialize(): array
     {
         return [
             'id' => $this->getId(),
+            'barcode' => $this->getBarcode(),
             'name' => $this->getName(),
             'description' => $this->getDescription(),
             'price' => $this->getPrice(),
             'provider' => $this->getProvider(),
-            'category' => $this->getCategory()
+            'category' => $this->getCategory(),
+            'image' => $this->getimage()
         ];
     }
 
@@ -151,5 +162,10 @@ class Product implements JsonSerializable
             throw new ProductInvalidCategoryException();
         }
         $this->category = $category;
+    }
+
+    public function setImage(string $image): void
+    {
+        $this->image = $image;
     }
 }

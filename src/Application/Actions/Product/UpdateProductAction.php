@@ -95,7 +95,7 @@ class UpdateProductAction extends ProductAction
 
         try {
             $this->productRepository->update($product);
-            return $this->respondWithData(null, 201);
+            return $this->respondWithData(null, 204);
         }
         catch(Exception $e) {
             $this->logger->error($e->getMessage());

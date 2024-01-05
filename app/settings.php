@@ -36,7 +36,9 @@ return function (ContainerBuilder $containerBuilder) {
                         'user' => $_ENV['DB_DEV_USER'] ?? 'user',
                         'password' => $_ENV['DB_DEV_PASSWORD'] ?? 'pass',
                     ]
-                ]
+                ],
+                'imagesPath' => APP_ROOT . '/public/images/products',
+                'allowedImageExtensions' => ['jpg', 'jpeg', 'png'],
             ]);
         }
     ]);
