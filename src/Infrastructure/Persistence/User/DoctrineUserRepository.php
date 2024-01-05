@@ -22,7 +22,6 @@ class DoctrineUserRepository implements UserRepository
         $this->repository = $this->em->getRepository(User::class);
     }
 
-
     public function findAll(): array
     {
         return $this->repository->findAll();

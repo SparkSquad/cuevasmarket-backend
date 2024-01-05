@@ -88,6 +88,12 @@ class ShippingAddress implements JsonSerializable
         return $this->zipCode;
     }
 
+    public function setID(int $id): ShippingAddress
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     public function setUser(User $user): ShippingAddress
     {
         $this->user = $user;

@@ -7,11 +7,12 @@ namespace App\Application\Actions\ShippingAddress;
 use App\Application\Actions\ActionError;
 use App\Domain\ShippingAddress\ShippingAddress;
 use Psr\Log\LoggerInterface;
+use Psr\Http\Message\ResponseInterface as Response;
 use Exception;
 
 class CreateShippingAddressAction extends ShippingAddressAction
 {
-    protected function action()
+    protected function action(): Response
     {
         $loggedUser = $this->request->getAttribute('loggedUser');
         $userId = (int) $loggedUser['id'];
