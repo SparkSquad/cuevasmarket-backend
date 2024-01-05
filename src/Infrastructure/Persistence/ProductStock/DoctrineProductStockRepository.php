@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\ProductStock;
 
 use App\Domain\Product\Product;
+use App\Domain\Product\ProductSearchResultsDTO;
 use App\Domain\ProductStock\ProductStock;
 use App\Domain\ProductStock\ProductStockRepository;
 use App\Domain\Store\StoreBranch;
@@ -48,7 +49,7 @@ class DoctrineProductStockRepository implements ProductStockRepository
             ->select('productStock')
             ->from(ProductStock::class, 'productStock')
             ->where('productStock.product = :productId')
-            ->andWhere('productStock.store = :storeBranchId')
+            ->andWhere('productStock.storeBranch = :storeBranchId')
             ->setParameter('productId', $productId)
             ->setParameter('storeBranchId', $storeBranchId)
             ->getQuery();
@@ -77,19 +78,40 @@ class DoctrineProductStockRepository implements ProductStockRepository
         return $query->getResult();
     }
 
-    public function search(string $storeId, string $keyword, int $maxResults, int $page): array
+    public function search(int $storeId, string $keyword, int $maxResults, int $page): ProductSearchResultsDTO
     {
         $query = $this->em->createQueryBuilder()
-            ->select('productStock')
-            ->from(ProductStock::class, 'productStock')
-            ->where('productStock.store = :storeId')
-            ->andWhere('productStock.product.name LIKE :keyword')
-            ->setParameter('storeId', $storeId)
-            ->setParameter('keyword', '%' . $keyword . '%')
-            ->setFirstResult($maxResults * ($page - 1))
-            ->setMaxResults($maxResults)
-            ->getQuery();
-        return $query->getResult();
+                ->select('product')
+                ->from(Product::class, 'product')
+                ->where('product.name LIKE :keyword')
+                ->setParameter('keyword', '%' . $keyword . '%')
+                ->setFirstResult($maxResults * ($page - 1))
+                ->setMaxResults($maxResults)
+                ->getQuery();
+            $results = $query->getResult();
+
+            // Get the total number of pages
+            $query = $this->em->createQueryBuilder()
+                ->select('COUNT(product)')
+                ->from(Product::class, 'product')
+                ->where('product.name LIKE :keyword')
+                ->setParameter('keyword', '%' . $keyword . '%')
+                ->getQuery();
+
+            $totalElems = $query->getSingleScalarResult();
+            $totalPages = intval(ceil($totalElems / $maxResults));
+
+            // Append store branch stock to each product
+            $finalResults = [];
+            foreach ($results as $product) {
+                $productStock = $this->findByProductIdAndStoreBranchId($product->getId(), $storeId);
+                $productRawData = $product->jsonSerialize();
+                $productRawData['stock'] = $productStock->getStock();
+                // append product to final results
+                $finalResults[] = $productRawData;
+            }
+
+            return new ProductSearchResultsDTO($finalResults, $totalPages, $page);
     }
 
     public function save(ProductStock $stock): void
@@ -110,6 +132,7 @@ class DoctrineProductStockRepository implements ProductStockRepository
     }
 
     public function addProductStock(int $storeBranchId, int $productId, int $quantity): ProductStock {
+        
         $productStock = $this->findByProductIdAndStoreBranchId($productId, $storeBranchId);
         $productStock->setStock($productStock->getStock() + $quantity);
         $this->update($productStock);

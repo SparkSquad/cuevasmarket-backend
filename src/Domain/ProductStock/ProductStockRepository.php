@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\ProductStock;
 
 use App\Domain\Product\ProductNotFoundException;
+use App\Domain\Product\ProductSearchResultsDTO;
 use App\Domain\Store\StoreBranchNotFoundException;
 
 interface ProductStockRepository
@@ -50,7 +51,7 @@ interface ProductStockRepository
      * @param int $page
      * @return Product[]
      */
-    public function search(string $storeId, string $keyword, int $maxResults, int $page): array;
+    public function search(int $storeId, string $keyword, int $maxResults, int $page): ProductSearchResultsDTO;
 
     /**
      * @param ProductStock $stock

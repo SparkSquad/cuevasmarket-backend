@@ -89,6 +89,11 @@ class User implements JsonSerializable
         return $this->type;
     }
 
+    public function getStoreBranch(): StoreBranch|null
+    {
+        return $this->storeBranch;
+    }
+
     public function setId(int $id): void
     {
         $this->id = $id;

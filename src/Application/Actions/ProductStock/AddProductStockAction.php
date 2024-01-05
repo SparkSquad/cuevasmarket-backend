@@ -10,7 +10,7 @@ use App\Domain\ProductStock\ProductStockNotFoundException;
 use Exception;
 use Slim\Psr7\Response;
 
-class AddProductStock extends ProductStockAction
+class AddProductStockAction extends ProductStockAction
 {
     protected function action(): Response
     {
