@@ -34,6 +34,27 @@ class CreateOrderAction extends OrderAction
             return $this->respondWithData($error, 400);
         }
 
+        $orderItems = $newOrderData['orderItems'];
+
+        if(!isset($orderItems) || !is_array($orderItems)) {
+            $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid order items.');
+            return $this->respondWithData($error, 400);
+        }
+
+        foreach($orderItems as $orderItem) {
+            $productId = $orderItem['productId'];
+            if(!isset($productId) || !is_int($productId)) {
+                $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid product id.');
+                return $this->respondWithData($error, 400);
+            }
+
+            $quantity = $orderItem['quantity'];
+            if(!isset($quantity) || !is_int($quantity)) {
+                $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid quantity.');
+                return $this->respondWithData($error, 400);
+            }
+        }
+
         $order = new Order();
         $order->setUserId($userId);
         $order->setShippingAddressId($shippingAddressId);
@@ -42,6 +63,11 @@ class CreateOrderAction extends OrderAction
         try {
             $orderId = $this->orderRepository->createOrder($order);
             $order->setId($orderId);
+            foreach($orderItems as $orderItem) {
+                $productId = $orderItem['productId'];
+                $quantity = $orderItem['quantity'];
+                $this->orderItemsRepository->createOrderItem($orderId, $productId, $quantity);
+            }
             return $this->respondWithData($order, 201);
         } catch(Exception $e) {
             $this->logger->error($e->getMessage());
