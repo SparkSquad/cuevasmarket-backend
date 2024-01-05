@@ -124,7 +124,6 @@ function load_default_product_data(EntityManager $entityManager): void
 }
 
 set_up_default_user($entityManager);
-set_up_default_products($entityManager);
 load_default_store_branches($entityManager);
 load_default_payment_methods($entityManager);
 load_default_shipping_addresses($entityManager);

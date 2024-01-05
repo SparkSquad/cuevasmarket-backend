@@ -17,7 +17,7 @@ class Product implements JsonSerializable
     public const PRODUCT_CATEGORY_BEVERAGES = 'Bebidas';
     public const PRODUCT_CATEGORY_FRESH_FOOD = 'Productos frescos';
     public const PRODUCT_CATEGORY_FROZEN_FOOD = 'Alimentos congelados';
-    public const PRODUCT_CATEGORY_MEET_AND_SEAFOOD = 'Carne y mariscos';
+    public const PRODUCT_CATEGORY_MEAT_AND_SEAFOOD = 'Carne y mariscos';
     public const PRODUCT_CATEGORY_CLEANING = 'Productos de limpieza';
     public const PRODUCT_CATEGORY_PERSONAL_CARE = 'Cuidado personal';
     public const PRODUCT_CATEGORY_SNACKS_AND_SWEETS = 'Snacks y dulces';
