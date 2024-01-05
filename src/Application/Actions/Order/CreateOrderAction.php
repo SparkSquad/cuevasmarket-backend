@@ -6,19 +6,28 @@ namespace App\Application\Actions\Order;
 
 use App\Application\Actions\ActionError;
 use App\Domain\Order\Order;
+use App\Domain\OrderItem\OrderItem;
+use App\Domain\User\User;
+use App\Domain\ShippingAddress\ShippingAddress;
+use App\Domain\PaymentMethod\PaymentMethod;
 use Psr\Log\LoggerInterface;
+use Psr\Http\Message\ResponseInterface as Response;
 use Exception;
 
 class CreateOrderAction extends OrderAction
 {
-    protected function action()
+    protected function action(): Response
     {
-        $loggedUser = $this->request->getAttribute('loggedUser');
-        $userId = (int) $loggedUser['id'];
 
         $newOrderData = $this->getFormData();
         if(is_null($newOrderData)) {
             $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid request body.');
+            return $this->respondWithData($error, 400);
+        }
+
+        $userId = $newOrderData['userId'];
+        if(!isset($userId) || !is_int($userId)) {
+            $error = new ActionError(ActionError::BAD_REQUEST, 'Invalid user id.');
             return $this->respondWithData($error, 400);
         }
 
@@ -56,23 +65,29 @@ class CreateOrderAction extends OrderAction
         }
 
         $order = new Order();
-        $order->setUserId($userId);
-        $order->setShippingAddressId($shippingAddressId);
-        $order->setPaymentMethodId($paymentMethodId);
+        $user = new User('', '', '', '', '', 'customer');
+        $user->setId($userId);
+        $order->setUserId($user);
+        $shippingAddress = new ShippingAddress($user, '', '', '', '', '');
+        $shippingAddress->setId($shippingAddressId);
+        $order->setShippingAddressId($shippingAddress);
+        $paymentMethod = new PaymentMethod($user, '', '', '', '');
+        $paymentMethod->setId($paymentMethodId);
+        $order->setPaymentMethodId($paymentMethod);
 
         try {
-            $orderId = $this->orderRepository->createOrder($order);
-            $order->setId($orderId);
+            $order = $this->orderRepository->save($order);
             foreach($orderItems as $orderItem) {
                 $productId = $orderItem['productId'];
                 $quantity = $orderItem['quantity'];
-                $this->orderItemsRepository->createOrderItem($orderId, $productId, $quantity);
+                $this->orderItemRepository->save($order->getId(), $productId, $quantity);
             }
-            return $this->respondWithData($order, 201);
         } catch(Exception $e) {
             $this->logger->error($e->getMessage());
-            $error = new ActionError(ActionError::SERVER_ERROR, 'Internal server error.');
+            $error = new ActionError(ActionError::SERVER_ERROR, 'Order not created.');
             return $this->respondWithData($error, 500);
         }
+
+        return $this->respondWithData($order);
     }
 }

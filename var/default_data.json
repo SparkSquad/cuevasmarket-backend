@@ -122,7 +122,7 @@
   ],
   "payment_methods": [
     {
-      "userId": 1,
+      "userId": 2,
       "cardNumber": "1234567890123456",
       "cardHolder": "John Doe",
       "expirationDate": "12/25",
@@ -131,7 +131,7 @@
   ],
   "shipping_addresses": [
     {
-      "userId": 1,
+      "userId": 2,
       "name": "John Doe",
       "streetAddress": "Calle Principal 123",
       "city": "Ciudad A",

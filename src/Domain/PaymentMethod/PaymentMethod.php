@@ -78,6 +78,11 @@ class PaymentMethod implements JsonSerializable
         return $this->securityCode;
     }
 
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
     public function setUser(User $user): void
     {
         $this->user = $user;
